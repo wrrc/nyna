@@ -7,11 +7,10 @@
 <script>
 export default {
   name: "wr-backtop",
-  created() {
-    window.addEventListener("scroll", this.isSscroll);
-  },
-  destroyed() {
-    window.removeEventListener("scroll", this.isSscroll);
+  computed: {
+    isShow() {
+      return this.$store.state.backIsShow
+    },
   },
   methods: {
     // 一阶贝塞尔曲线方程
@@ -19,8 +18,8 @@ export default {
       return a1 + (a2 - a1) * t;
     },
     fn() {
-      if(this.from > 0){
-        let ii = this.onebsr(100/document.body.scrollHeight, this.from, 0)
+      if(this.$store.state.from > 0){
+        let ii = this.onebsr(100/document.body.scrollHeight, this.$store.state.from, 0)
         document.body.scrollTop = document.documentElement.scrollTop = ii;
         this.timer = requestAnimationFrame(this.fn);
       }else{
@@ -29,20 +28,10 @@ export default {
     },
     handleBack() {
       requestAnimationFrame(this.fn)
-    },
-    isSscroll() {
-      this.from = document.body.scrollTop || document.documentElement.scrollTop;
-      if (this.from > 100) {
-        this.isShow = true;
-      } else {
-        this.isShow = false;
-      }
     }
   },
   data() {
     return {
-      isShow: false,
-      from: null,
       timer: null
     };
   }

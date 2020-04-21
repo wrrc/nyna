@@ -20,7 +20,8 @@ export default {
   },
   beforeCreate() {
     this.$store.dispatch('getNav');
-  },
+    this.$store.dispatch('scrollSlideEvent');
+  }
 };
 </script>
 
