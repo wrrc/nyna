@@ -1,0 +1,15 @@
+# 请求 nav
+# POST http://127.0.0.1:7001/home HTTP/1.1
+# content-type: application/json
+
+# {
+#   "name": "关于",
+#   "path": "/about"
+# }
+
+GET http://127.0.0.1:7001/home HTTP/1.1
+content-type: application/json
+# { name: '🎊 主页', path: '/' },
+#           { name: '📻 分类', path: '/typeOrTag' },
+#           { name: '🎟 友链', path: '/friendsLink' },
+#           { name: '🎏 关于', path: '/about' }
