@@ -17,10 +17,6 @@ export default new Vuex.Store({
     setNav(state, v) {
       state.nav = v.val
     },
-    // setFrom(s, v) {
-
-    // },
-
     isScroll(s) {
       s.from = document.body.scrollTop || document.documentElement.scrollTop
       if (s.from > 100) {

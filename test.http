@@ -1,15 +1,17 @@
-# 请求 nav
+# vscode 三方插件 REST Client 快速接口测试，免去外部 Postman 来回切换，妙啊😗
+
+# 创建 nav
 # POST http://127.0.0.1:7001/home HTTP/1.1
 # content-type: application/json
-
 # {
 #   "name": "关于",
 #   "path": "/about"
 # }
 
+# 请求 nav
 GET http://127.0.0.1:7001/home HTTP/1.1
 content-type: application/json
 # { name: '🎊 主页', path: '/' },
-#           { name: '📻 分类', path: '/typeOrTag' },
-#           { name: '🎟 友链', path: '/friendsLink' },
-#           { name: '🎏 关于', path: '/about' }
+# { name: '📻 分类', path: '/typeOrTag' },
+# { name: '🎟 友链', path: '/friendsLink' },
+# { name: '🎏 关于', path: '/about' }

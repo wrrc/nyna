@@ -1,23 +1,16 @@
 <template>
   <div>
     <div class="timeList">
-    <label class="timeList_time h5">
+    <!-- <label class="timeList_time h5">
       <em>2020-03-21</em>
-    </label>
+    </label> -->
     <section class="card">
-      <h4 class="card-header">当然！这里要放标题的</h4>
-      <article class="card-body">
-        这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本
-      </article>
-    </section>
-    <!-- <router-link tooltip="让我康康" placement="right-top" to>👁‍🗨</router-link> -->
-    </div>
-    <div class="timeList">
-    <label class="timeList_time h5">
-      <em>2020-03-21</em>
-    </label>
-    <section class="card">
-      <h4 class="card-header">当然！这里要放标题的</h4>
+      <div class="card-header">
+        <h4>假设这里是标题</h4>
+        <label class="timeList_time">
+          <em>2020-03-21</em>
+        </label>
+      </div>
       <article class="card-body">
         这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本
       </article>
@@ -70,7 +63,7 @@ export default {
   display: inline-block;
   position: absolute;
   left: 0;
-  top: 1.5rem;
+  top: 40%;
   width: 10px;
   height: 10px;
   background-color: rgba(44, 62, 80, 0.8);
@@ -107,7 +100,7 @@ export default {
   -webkit-box-shadow: 3px 3px 15px -5px #485b6e;
 }
 .timeList_time {
-  margin-bottom: 50px;
+  /* margin-bottom: 50px; */
   color: rgba(44, 62, 80, 0.8);
 }
 .card {
@@ -132,6 +125,7 @@ export default {
   white-space: pre;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: center;
 }
 .card-header:first-child {
   border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
@@ -140,5 +134,6 @@ export default {
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
   padding: 1.25rem;
+  text-indent: 2em;
 }
 </style>

@@ -1,15 +1,14 @@
 <template>
   <div>
     <h1>分类</h1>
-    <form>
-      <input type="text" v-model="form.name" />
-      <input type="text" v-model="form.password" />
-      <input type="text" v-model="form.age" />
-      <input type="text" v-model="form.sex" />
-      <input type="text" v-model="form.job" />
-      <input type="text" v-model="form.lastTime" />
-      <button @click="handleClick">提交</button>
-    </form>
+    <div class="wave ripple danger">
+			<div class="circle"></div>
+			<div class="circle"></div>
+			<div class="circle"></div>
+			<div class="content">
+				<i class="fa fa-bell"></i>
+			</div>
+		</div>
   </div>
 </template>
 
@@ -17,30 +16,100 @@
 export default {
   data() {
     return {
-      form: {
-        name: '',
-        password: '',
-        age: '',
-        sex: '',
-        job: '',
-        lastTime: '',
-      }
+
     }
-  },
-  methods: {
-    handleClick(e) {
-      e.preventDefault();
-      console.log('object');
-      axios({
-        method: 'post',
-        url: '/users',
-        headers: {
-          'X-XSRF-TOKEN': 'egg-mongo_1587173505279_9351',
-        },
-        data: this.form,
-      })
-      .then(res => console.log(res))
-    },
-  },
+  }
 }
 </script>
+
+<style scoped>
+.wave {
+			position: relative;
+		    width: 100px;
+		    height: 100px;
+		    text-align: center;
+		    line-height: 100px;
+		    font-size: 28px;
+		}
+
+		.wave .circle {
+		    position: absolute;
+		    border-radius: 50%;
+		    opacity: 0;
+		}
+
+		/* 波纹效果 */
+		.wave.ripple .circle {
+		    width: calc(100% - 6px); /* 减去边框的大小 */
+    		height: calc(100% - 6px);/* 减去边框的大小 */
+		    border: 3px solid #fff;
+		}
+
+		.wave.ripple .circle:first-child {
+			animation: circle-opacity 2s infinite;
+		}
+
+		.wave.ripple .circle:nth-child(2) {
+			animation: circle-opacity 2s infinite;
+			animation-delay: .3s;
+		}
+
+		.wave.ripple .circle:nth-child(3) {
+		 	animation: circle-opacity 2s infinite;
+			animation-delay: .6s;
+		}
+
+		.wave.ripple.danger {
+		    color: red;
+		}
+
+		.wave.ripple.danger .circle {
+			border-color: red;
+		}
+
+		.wave.ripple.warning {
+		    color: orange;
+		}
+
+		.wave.ripple.warning .circle {
+		    border-color: orange;
+		}
+
+		/* 波动效果 */
+		.wave.solid .circle{
+			width: 100%;
+    		height: 100%;
+		    background: #fff;
+		}
+
+		.wave.solid .circle:first-child {
+			animation: circle-opacity 2s infinite;
+		}
+
+		.wave.solid.danger {
+			color: red;
+		}
+
+		.wave.solid.danger .circle{
+			background: red;
+		}
+
+		.wave.solid.warning {
+			color: orange;
+		}
+
+		.wave.solid.warning .circle{
+			background: orange;
+		}
+
+		@keyframes circle-opacity{
+		    from {
+		        opacity: 1;
+		        transform: scale(0);
+		    }
+		    to {
+		        opacity: 0;
+		        transform: scale(1);
+		    }
+		}
+</style>

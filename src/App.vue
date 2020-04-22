@@ -1,10 +1,13 @@
 <template>
-  <div class="container">
-    <Nav></Nav>
-    <div class="main">
-      <router-view />
-      <BackTop />
+  <div>
+    <Nav />
+    <div class="container">
+      <div class="main">
+        <router-view />
+        <BackTop />
+      </div>
     </div>
+
   </div>
 </template>
 
@@ -19,7 +22,9 @@ export default {
     Nav
   },
   beforeCreate() {
-    this.$store.dispatch('getNav');
+    if (!this.$store.state.nav) {
+      this.$store.dispatch('getNav');
+    }
     this.$store.dispatch('scrollSlideEvent');
   }
 };
