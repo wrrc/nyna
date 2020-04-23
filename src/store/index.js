@@ -7,8 +7,11 @@ export default new Vuex.Store({
   state: {
     nav: null,
     count: 0,
-    from: null,
+    from: 0,
+    inWidth: window.innerWidth,
     backIsShow: false,
+    barShrink: false,
+    isDown: true,
   },
   mutations: {
     increment(state) {
@@ -19,12 +22,15 @@ export default new Vuex.Store({
     },
     isScroll(s) {
       s.from = document.body.scrollTop || document.documentElement.scrollTop
-      if (s.from > 100) {
-        s.backIsShow = true;
-      } else {
-        s.backIsShow = false;
-      }
+      s.backIsShow = s.from > 100? true : false;
     },
+    isInnerW(s) {
+      s.inWidth = window.innerWidth;
+      s.barShrink = s.inWidth >= 630 ? true : false;
+    },
+    setIsDown(s, v) {
+      s.isDown = v.val;
+    }
   },
   actions: {
 
@@ -44,9 +50,10 @@ export default new Vuex.Store({
       });
     },
 
-    // 添加滚动监听
+    // 添加滚动及页面宽度监听
     scrollSlideEvent({ commit }) {
       window.addEventListener('scroll', () => commit('isScroll'));
+      window.addEventListener('resize', () => commit('isInnerW'));
     },
 
     // vue 官方示例

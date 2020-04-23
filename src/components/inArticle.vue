@@ -96,8 +96,8 @@ export default {
   /* color: #fff; */
 }
 .timeList:hover .card {
-  box-shadow: 3px 3px 15px -5px #485b6e;
-  -webkit-box-shadow: 3px 3px 15px -5px #485b6e;
+  box-shadow: 0 20px 40px -15px rgba(0,0,0,.2);
+  -webkit-box-shadow: 0 20px 40px -15px rgba(0,0,0,.2);
 }
 .timeList_time {
   /* margin-bottom: 50px; */

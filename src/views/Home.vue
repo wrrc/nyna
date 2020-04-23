@@ -1,6 +1,7 @@
 <template>
-  <div style="height: 1000px;">
-    <img alt="Vue logo" src="../assets/logo.png" />
+  <div>
+    <!-- <img alt="Vue logo" src="../assets/logo.png" /> -->
+    <OutText msg="简而言之，这是闻人若川写一些东西的地方..."/>
     <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
     <InArticle />
   </div>
@@ -9,13 +10,16 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue';
-import InArticle from '@/components/inArticle.vue';
+import OutText from '@/components/OutText'
+import InArticle from '@/components/InArticle.vue';
 
 export default {
   name: 'Home',
+
   components: {
     // HelloWorld,
-    InArticle
+    OutText,
+    InArticle,
   }
 };
 </script>
