@@ -1,6 +1,6 @@
 <template>
-  <div class="output_box">
-    <p class="h3 prints">{{writeText}}</p>
+  <div class="box output_box">
+    <p class="h3 prints" ref="outHere"></p> <!-- {{writeText}} -->
   </div>
 </template>
 
@@ -10,23 +10,34 @@
     props: ['msg'],
     data() {
       return {
-        writeText: '',
-        delay: 300,
-        i: 1,
+        delay: 240,
+        i: 0,
+        le: this.msg.split(''),
+        timer: null,
       }
     },
     mounted() {
-      this.handleWrite();
+      this.timer = this.handleWrite();
+    },
+    beforeDestroy() {
+      clearTimeout(this.timer);
     },
     methods: {
       handleWrite() {
-        this.writeText = this.msg.slice(0, this.i++);
-        if (this.i > this.msg.length) {
-          this.i = 0;
-          setTimeout(this.handleWrite, this.delay);
-        }else {
-          setTimeout(this.handleWrite, this.delay);
-        }
+        return setInterval(() => {
+          this.$refs.outHere.innerHTML += this.le[this.i];
+          this.i++;
+          if (this.i >= this.le.length) {
+            // this.$refs.outHere.innerHTML = '';
+            // this.i = 0;
+            // let time = new Date().getTime(),
+            //     timend;
+            // do {
+            //   timend = new Date().getTime();
+            // } while (timend - time <= 3000);
+            clearTimeout(this.timer);
+          }
+        }, this.delay);
       },
     },
   }
@@ -34,11 +45,57 @@
 
 <style scoped>
 .output_box {
-  height: 200px;
-  padding: .5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all .3s ease;
+  /* height: 200px; */
+  width: 90vw;
+  height: 60vh;
+  /* padding: .5rem; */
+  background: url('../assets/img/背景1.jpg') center center no-repeat;
+  background-size: cover;
+  border-radius: 20px;
+  animation: bc-drop .8s forwards;
+  /* transition: all .3s ease; */
+}
+
+@keyframes bc-drop {
+  from {
+    transform: scale(0, 0);
+  }
+  50% {
+    transform: scale(75%, 75%);
+  }
+  to {
+    transform: scale(100%, 100%);
+  }
+}
+
+.prints::after{
+  content: ' _';
+  animation: glint 1s infinite;
+}
+
+@keyframes glint{
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
+}
+
+.output_box p {
+  /* transition: all .3s ease; */
+  animation: text-animat 5s;
+}
+
+@keyframes text-animat {
+  from {
+    transform: translateX(-50%);
+  }
+  50% {
+    transform: translateX(-25%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 </style>

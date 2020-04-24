@@ -5,10 +5,11 @@
 :root {
   --br: 5px;
   --bcl: ghostwhite;
+  --bcw: #fff;
   --bcb: #2C3E50;
   --pad: 6px 12px;
   --transit: all .3s cubic-bezier(0.1, 0, 0.8, 1);
-  --boxSha: 0 20px 40px -15px rgba(0,0,0,.2)
+  --boxSha: 0 20px 40px -15px rgba(0, 0, 0, .2)
   /* 0 10px 20px -5px rgba(44, 62, 80, 0.5); */
 }
 
@@ -26,11 +27,14 @@ html, body {
 body {
   height: 1200px;
   width: 100%;
+  overflow-x: hidden;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
   background-color: var(--bcl);
+  transition: color 1s ease,
+              background-color .5s ease;
 }
 
 body::-webkit-scrollbar {
@@ -69,7 +73,7 @@ ul, ol {
 
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
-  margin-left: .5rem;
+  /* margin-left: .5rem; */
   margin-bottom: .5rem;
   margin-top: 0;
   font-weight: 500;
@@ -100,12 +104,12 @@ h6, .h6 {
   font-size: 1rem;
 }
 
-button {
+/* button {
   display: inline-block;
   width: 70px;
   padding: 6px 12px;
   margin-bottom: 10px;
-  background-color: #fff;
+  background-color: var(--bcw);
   border: 1px solid rgba(0, 0, 0, .5);
   border-radius: var(--br);
   cursor: pointer;
@@ -115,9 +119,24 @@ button {
 }
 
 button:hover {
-  color: #fff;
+  color: var(--bcw);
   border-color: var(--bcb);
   background-color: var(--bcb);
+}
+
+button:active {
+  animation: circle-opacity 2s infinite;
+} */
+
+@keyframes circle-opacity{
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .btn {
@@ -129,12 +148,34 @@ button:hover {
   cursor: pointer;
   -webkit-box-shadow: 0 1px 0 rgba(66, 66, 66, .15);
           box-shadow: 0 1px 0 rgba(66, 66, 66, .15);
-          transition: all .3s ease;
+  transition: all .3s ease;
 }
+
+.btn:hover {
+	animation: shake 0.8s cubic-bezier(.36, .07, .19, .97) both;
+	transform: translate3d(0, 0, 0);
+	backface-visibility: hidden;
+	perspective: 1000px;
+}
+
 .btn:active {
+  color: var(--bcw);
   background-color: var(--bcb);
-  -webkit-box-shadow: 0 0 0 rgba(66, 66, 66, .15);
-          box-shadow: 0 0 0 rgba(66, 66, 66, .15);
+}
+
+@keyframes shake {
+	10%, 90% {
+		transform: translate3d(-1px, 0, 0);
+	}
+	20%, 80% {
+		transform: translate3d(1px, 0, 0);
+	}
+	30%, 50%, 70% {
+		transform: translate3d(-2px, 0, 0);
+	}
+	40%, 60% {
+		transform: translate3d(2px, 0, 0);
+	}
 }
 
 .container {
@@ -184,25 +225,35 @@ button:hover {
   }
 }
 
+.box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 .bar {
   width: max-content;
-  margin: .5rem auto;
+  margin: 1rem auto;
   padding: 6px 12px;
+  /* margin: 0 0 .5rem 0; */
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   border-radius: var(--br);
-  background-color: #fff;
+  background-color: var(--bcw);
   box-shadow: 0 20px 40px -15px rgba(0,0,0,.2);
   z-index: 9;
   transition: all .3s ease;
 }
 
 .bar.bide {
-  width: 98.5%;
   position: fixed;
-  top: 0;
+  top: 0;right: 0;left: 0;
+  width: 98.5%;
+  /* position: fixed;
+  top: 0; */
   margin: 0 0 .5rem 0;
   border-radius: 0;
   transition: all .3s ease;
@@ -211,9 +262,11 @@ button:hover {
 
 @keyframes bar-to-bide {
   from {
+    transform: translateY(-100%);
     opacity: 0;
   }
   to {
+    transform: translateY(0);
     opacity: 1;
   }
 }
@@ -268,6 +321,10 @@ button:hover {
   text-align: center;
 }
 
+.attach > span {
+  padding: 2px 6px;
+}
+
 @keyframes spread {
   from {
     box-shadow: inset 0 -3px 20px 0 rgb(187, 19, 187),
@@ -283,40 +340,83 @@ button:hover {
   }
 }
 
-.prints::after{
-  content: ' _';
-  animation: glint 1s infinite;
-}
-@keyframes glint{
-  from{
-      opacity: 0;
-  }
-  to{
-      opacity: 1;
-  }
-}
-
 /* 路由过渡 */
 .slide-right-enter-active,
 .slide-right-leave-active,
 .slide-left-enter-active,
 .slide-left-leave-active {
   will-change: transform;
-  transition: all .3s ease;
-  position: absolute;
   width: 100%;
+  position: absolute;
+  left: 0;right: 0;
+  margin: 0 auto;
 }
-.slide-right-enter {
-  transform: translateX(-100%);
+.slide-left-enter-active {
+  animation: in-left .8s ease forwards;
 }
-.slide-right-leave-active {
-  transform: translateX(100%);
-}
-.slide-left-enter {
-  transform: translateX(100%);
-}
+
 .slide-left-leave-active {
-  transform: translateX(-100%);
+  animation: out-left .8s forwards;
+}
+
+.slide-right-enter-active {
+  animation: in-right .8s ease forwards;
+}
+
+.slide-right-leave-active {
+  animation: out-right .8s forwards;
+}
+
+@keyframes in-left {
+  from {
+    /* transform: rotate3d(1,1,1,180deg); */
+    /* transform: rotateX(180deg); */
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    /* transform: rotate3D(1,1,1,0); */
+    /* transform: rotateX(0); */
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes out-left {
+  from {
+    /* transform: rotateX(0); */
+    transform: translateX(0);
+    opacity: 1;
+    z-index: -1;
+  }
+  to {
+    /* transform: rotateX(180deg); */
+    transform: translateX(-100%);
+    opacity: 0;
+    z-index: -1;
+  }
+}
+
+@keyframes in-right {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes out-right {
+  from {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 1;
+  }
 }
 
 /* tooltip样式 */
@@ -358,19 +458,19 @@ button:hover {
 }
 
 [tooltip][placement^="top"]::after, [tooltip][placement^="top"]::before {
-  animation: anime-top 300ms ease-out forwards;
+  animation: anime-top .3s ease-out forwards;
 }
 
 [tooltip][placement^="right"]::after, [tooltip][placement^="right"]::before {
-  animation: anime-right 300ms ease-out forwards;
+  animation: anime-right .3s ease-out forwards;
 }
 
 [tooltip][placement^="bottom"]::after, [tooltip][placement^="bottom"]::before {
-  animation: anime-bottom 300ms ease-out forwards;
+  animation: anime-bottom .3s ease-out forwards;
 }
 
 [tooltip][placement^="left"]::after, [tooltip][placement^="left"]::before {
-  animation: anime-left 300ms ease-out forwards;
+  animation: anime-left .3s ease-out forwards;
 }
 
 /* 气泡主题 */

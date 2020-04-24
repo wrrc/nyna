@@ -1,6 +1,6 @@
 <template>
-  <div class="box">
-    <h1>This is an about page</h1>
+  <div>
+
   </div>
 </template>
 
@@ -9,3 +9,7 @@
 
   }
 </script>
+
+<style scoped>
+
+</style>

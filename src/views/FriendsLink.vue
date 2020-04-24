@@ -1,5 +1,19 @@
 <template>
-  <div>
-    <h1>嘿嘿嘿</h1>
+  <div class="box">
+    <p class="h2">
+      额，这里还没有其他小伙伴哦
+    </p>
+    <Login />
   </div>
 </template>
+
+<script>
+  import Login from '@/components/Login.vue'
+  export default {
+
+  }
+</script>
+
+<style scoped>
+
+</style>

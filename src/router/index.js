@@ -19,9 +19,9 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
-    path: '/typeOrTag',
-    name: 'TypeOrTag',
-    component: () => import('../views/TypeOrTag.vue')
+    path: '/type',
+    name: 'Type',
+    component: () => import('../views/Type.vue')
   },
   {
     path: '/friendsLink',

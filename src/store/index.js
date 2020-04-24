@@ -21,8 +21,8 @@ export default new Vuex.Store({
       state.nav = v.val
     },
     isScroll(s) {
-      s.from = document.body.scrollTop || document.documentElement.scrollTop
-      s.backIsShow = s.from > 100? true : false;
+      s.from = document.body.scrollTop || document.documentElement.scrollTop;
+      s.backIsShow = s.from > 100 ? true : false;
     },
     isInnerW(s) {
       s.inWidth = window.innerWidth;

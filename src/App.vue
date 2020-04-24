@@ -1,14 +1,12 @@
 <template>
   <div>
     <DropDown />
-    <Nav />
+    <Nav isPosition="bottom" />
     <div class="container">
-      <div class="main">
-        <transition :name="transitionName">
-          <router-view />
-        </transition>
-        <BackTop />
-      </div>
+      <transition :name="transitionName">
+        <router-view />
+      </transition>
+      <BackTop />
     </div>
 
   </div>
@@ -29,9 +27,11 @@ export default {
     this.$store.commit('isInnerW')
   },
   watch: {
-    '$route' (to, from) {console.log(to.path);
-      const toDepth = to.path.split('/').length
-      const fromDepth = from.path.split('/').length
+    '$route' (to, from) {
+      let routes = this.navSet;
+      routes.unshift('/');
+      const toDepth = routes.indexOf(to.path);
+      const fromDepth = routes.indexOf(from.path);
       this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left';
     }
   },
@@ -39,6 +39,13 @@ export default {
     return {
       transitionName: 'slide-left',
     }
+  },
+  computed: {
+    navSet() {
+      return this.$store.state.nav.map(v => {
+        return v.nav_path
+      });
+    },
   },
   components: {
     BackTop,
@@ -48,6 +55,6 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style scoped>
 
 </style>

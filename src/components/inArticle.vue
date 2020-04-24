@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div class="timeList">
-    <!-- <label class="timeList_time h5">
+    <div class="time-list">
+    <!-- <label class="time-list-time h5">
       <em>2020-03-21</em>
     </label> -->
     <section class="card">
       <div class="card-header">
         <h4>假设这里是标题</h4>
-        <label class="timeList_time">
+        <label class="time-list-time">
           <em>2020-03-21</em>
         </label>
       </div>
@@ -41,13 +41,14 @@ export default {
 </script>
 
 <style scoped>
-.timeList {
+/* inArticle */
+.time-list {
   position: relative;
   padding: 1rem 0 2rem 3rem;
-  z-index: 5;
 }
+
 /* 列表项自带竖线 */
-.timeList:before {
+.time-list:before {
   content: "";
   display: inline-block;
   position: absolute;
@@ -57,8 +58,9 @@ export default {
   height: 100%;
   border-right: 1px dashed rgba(44, 62, 80, 0.1);
 }
+
 /* 列表项自带小圆点 */
-.timeList:after {
+.time-list:after {
   content: "";
   display: inline-block;
   position: absolute;
@@ -68,17 +70,10 @@ export default {
   height: 10px;
   background-color: rgba(44, 62, 80, 0.8);
   border-radius: 5px;
-  /* margin-top: -2px; */
   transition: all 0.3s ease;
 }
-/* .timeList-first:before {
-    height: 50%;
-    top: 50%;
-}
-.timeList-last:before {
-    height: 50%;
-} */
-.timeList:hover:after {
+
+.time-list:hover:after {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -91,18 +86,22 @@ export default {
   -webkit-box-shadow: 0 0 0 3px #d8e9ff;
   box-shadow: 0 0 0 3px #d8e9ff;
 }
-.timeList:hover > .card {
+
+.time-list:hover > .card {
   /* background-color: #3d93fd; */
   /* color: #fff; */
 }
-.timeList:hover .card {
+
+.time-list:hover .card {
   box-shadow: 0 20px 40px -15px rgba(0,0,0,.2);
   -webkit-box-shadow: 0 20px 40px -15px rgba(0,0,0,.2);
 }
-.timeList_time {
+
+.time-list-time {
   /* margin-bottom: 50px; */
-  color: rgba(44, 62, 80, 0.8);
+  color: var(--bcb);
 }
+
 .card {
   position: relative;
   display: -ms-flexbox;
@@ -111,12 +110,13 @@ export default {
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;
-  background-color: #fff;
+  background-color: var(--bcw);
   background-clip: border-box;
   border: 1px solid rgba(44, 62, 80, 0.125);
   border-radius: 5px;
   transition: all 0.3s ease;
 }
+
 .card-header {
   padding: 0.75rem 1.25rem;
   margin: 0;
@@ -127,9 +127,11 @@ export default {
   text-overflow: ellipsis;
   text-align: center;
 }
+
 .card-header:first-child {
   border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
 }
+
 .card-body {
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;

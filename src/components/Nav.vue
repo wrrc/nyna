@@ -1,6 +1,6 @@
 <template>
   <div :class="{bar: true, bide: bide}">
-    <router-link to="/" class="log" tooltip="别点，点就是首页" placement="bottom">💌</router-link>
+    <router-link to="/" class="log" tooltip="别点，点就是首页" :placement="isPosition">💌</router-link>
     <div class="nav" v-show="barShrink">
       <router-link v-for="(item, index) in navSet" :key="index" :to="item.nav_path">{{item.nav_name}}</router-link>
     </div>
@@ -8,9 +8,10 @@
       <input type="search" class="search" placeholder="当然你可以不搜..."  v-show="barShrink" />
     </div>
     <div class="attach">
-      <span v-show="barShrink" class="btn" tooltip="分享" placement="bottom">📡</span>
-      <span v-show="!barShrink" class="btn" @click="dropDown" tooltip="查看更多" placement="bottom">👀</span>
-      <span v-show="barShrink" class="btn" tooltip="设置" placement="bottom">⚙</span>
+      <span v-show="!barShrink" class="btn" @click="dropDown" tooltip="查看更多" :placement="isPosition">👀</span>
+      <span v-show="barShrink" class="btn" tooltip="设置" :placement="isPosition">⚙</span>
+      <span v-show="barShrink" @click="handleNight" class="btn" tooltip="夜间模式" :placement="isPosition">🌞</span>
+      <span v-show="barShrink" @click="handleLogin" class="btn" tooltip="登录" :placement="isPosition">📡</span>
     </div>
   </div>
 </template>
@@ -19,6 +20,7 @@
   import { mapState } from 'vuex';
   export default {
     name: 'wr-nav',
+    props: ['isPosition'],
     methods: {
       dropDown() {
         this.$store.commit({
@@ -26,6 +28,20 @@
           val: false,
         })
       },
+      handleNight(e) {
+        if (e.target.innerHTML === '🌞') {
+          e.target.innerHTML = '🌙';
+          document.documentElement.style.setProperty('--bcl', '#171d20');
+          document.documentElement.style.setProperty('--bcw', '#2C3E50');
+          document.documentElement.style.setProperty('--bcb', 'ghostwhite');
+        }else {
+          e.target.innerHTML = '🌞';
+          document.documentElement.style.setProperty('--bcl', 'ghostwhite');
+          document.documentElement.style.setProperty('--bcw', '#fff');
+          document.documentElement.style.setProperty('--bcb', '#2C3E50');
+        }
+      },
+      handleLogin() {}
     },
     // 3.0 获取多个状态，不必每个都生成计算属性
     computed: mapState({
