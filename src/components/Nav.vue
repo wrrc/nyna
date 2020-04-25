@@ -8,10 +8,10 @@
       <input type="search" class="search" placeholder="当然你可以不搜..."  v-show="barShrink" />
     </div>
     <div class="attach">
-      <span v-show="!barShrink" class="btn" @click="dropDown" tooltip="查看更多" :placement="isPosition">👀</span>
-      <span v-show="barShrink" class="btn" tooltip="设置" :placement="isPosition">⚙</span>
-      <span v-show="barShrink" @click="handleNight" class="btn" tooltip="夜间模式" :placement="isPosition">🌞</span>
-      <span v-show="barShrink" @click="handleLogin" class="btn" tooltip="登录" :placement="isPosition">📡</span>
+      <button v-show="!barShrink" class="btn" @click="dropDown" tooltip="查看更多" :placement="isPosition">👀</button>
+      <button v-show="barShrink" class="btn" tooltip="设置" :placement="isPosition">⚙</button>
+      <button v-show="barShrink" @click="handleNight" class="btn" tooltip="夜间模式" :placement="isPosition">🌞</button>
+      <button v-show="barShrink" @click="handleLogin" class="btn" tooltip="登录" :placement="isPosition">📡</button>
     </div>
   </div>
 </template>
@@ -41,7 +41,9 @@
           document.documentElement.style.setProperty('--bcb', '#2C3E50');
         }
       },
-      handleLogin() {}
+      handleLogin() {
+        this.$router.push('/login');
+      }
     },
     // 3.0 获取多个状态，不必每个都生成计算属性
     computed: mapState({

@@ -56,18 +56,6 @@
   /* transition: all .3s ease; */
 }
 
-@keyframes bc-drop {
-  from {
-    transform: scale(0, 0);
-  }
-  50% {
-    transform: scale(75%, 75%);
-  }
-  to {
-    transform: scale(100%, 100%);
-  }
-}
-
 .prints::after{
   content: ' _';
   animation: glint 1s infinite;

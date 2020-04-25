@@ -10,8 +10,10 @@
         <div class="article-warp">
           <section class="card">
             <div class="card-header">
-              <cite class="title">关于用 Vue 搭建博客</cite>
-              <p><em>2020-04-21</em></p>
+              <p>
+                <cite class="title">关于用 Vue 搭建博客</cite>
+              </p>
+              2020-04-21
             </div>
             <article class="card-body">
               这个东西不太好弄啊，，，，，气死个人，边做边想，要是有设计稿就好惹 (∪.∪ )...zzz
@@ -112,9 +114,12 @@ export default {
   /* color: blueviolet; */
 }
 
-/* .title {
-  text-shadow: 1px 1px 1px #2C3E50;
-} */
+.title {
+  /* text-shadow: 1px 1px 1px #2C3E50; */
+  white-space: pre;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .card {
   position: relative;
@@ -147,15 +152,16 @@ export default {
 }
 
 .card-header {
+  display: flex;
+  justify-content: space-between;
   padding: 1.25rem;
   margin: 0;
   /* background-color: rgba(44, 62, 80, 0.03); */
   border-bottom-width: 80%;
   /* border-bottom: 1px solid rgba(44, 62, 80, 0.125); */
-  white-space: pre;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: center;
+
+  /* text-align: center; */
+
 }
 
 .card-header:first-child {

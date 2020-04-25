@@ -15,10 +15,14 @@ export default new Vuex.Store({
   },
   mutations: {
     increment(state) {
-      state.count++
+      state.count++;
     },
     setNav(state, v) {
-      state.nav = v.val
+      state.nav = v.val;
+      sessionStorage.setItem('navs', JSON.stringify(state.nav));
+    },
+    setNavInSeeeion(s, v) {
+      s.nav = v;
     },
     isScroll(s) {
       s.from = document.body.scrollTop || document.documentElement.scrollTop;
@@ -38,7 +42,6 @@ export default new Vuex.Store({
     getNav({ commit }) {
       axios.get('/home').then(({ data }) => {
         if (data.code === 100) {
-
           // 对象方式分发
           commit({
             type: 'setNav',

@@ -28,6 +28,11 @@ Vue.use(VueRouter)
     name: 'FriendsLink',
     component: () => import('../views/FriendsLink.vue')
   },
+    {
+      path: '/login',
+      name: 'Login',
+      component: () => import('../views/Login.vue')
+    },
   {
     path: '*',
     name: 'NotFind',

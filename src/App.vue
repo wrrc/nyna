@@ -8,7 +8,6 @@
       </transition>
       <BackTop />
     </div>
-
   </div>
 </template>
 
@@ -20,7 +19,10 @@ import Nav from '@/components/Nav.vue';
 export default {
   name: 'app-root',
   beforeCreate() {
-    if (!this.$store.state.nav) {
+    const navs = JSON.parse(sessionStorage.getItem('navs'));
+    if (navs) {
+      this.$store.commit('setNavInSeeeion', navs);
+    } else {
       this.$store.dispatch('getNav');
     }
     this.$store.dispatch('scrollSlideEvent');
