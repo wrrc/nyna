@@ -5,7 +5,7 @@
       <router-link v-for="(item, index) in navSet" :key="index" :to="item.nav_path">{{item.nav_name}}</router-link>
     </div>
     <div class="attach">
-      <input type="search" class="search" placeholder="当然你可以不搜..."  v-show="barShrink" />
+      <input type="search" v-model="handleSearch" class="search" placeholder="当然你可以不搜..."  v-show="barShrink" />
     </div>
     <div class="attach">
       <button v-show="!barShrink" class="btn" @click="dropDown" tooltip="查看更多" :placement="isPosition">👀</button>
@@ -21,12 +21,18 @@
   export default {
     name: 'wr-nav',
     props: ['isPosition'],
+    data() {
+      return {
+        handleSearch: '',
+      }
+    },
     methods: {
       dropDown() {
         this.$store.commit({
           type: 'setIsDown',
           val: false,
-        })
+        });
+        // document.body.style.filter = 'blur(5px)';
       },
       handleNight(e) {
         if (e.target.innerHTML === '🌞') {
@@ -54,7 +60,10 @@
       // 传字符串参数 'bide' 等同于 `state => state.bide`
       bide: 'backIsShow',
       barShrink: 'barShrink',
-    })
+    }),
+    watch: {
+      handleSearch(newValue, oldValue) {},
+    },
 
     // 2.0 通过 API 获取导航，挂到 vuex
     // 计算属性取 store 值

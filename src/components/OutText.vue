@@ -1,5 +1,5 @@
 <template>
-  <div class="box output_box">
+  <div class="box output_box" ref="loopBack">
     <p class="h3 prints" ref="outHere"></p> <!-- {{writeText}} -->
   </div>
 </template>
@@ -7,7 +7,7 @@
 <script>
   export default {
     name: 'wr-outText',
-    props: ['msg'],
+    props: ['imgPath', 'msg'],
     data() {
       return {
         delay: 240,
@@ -25,17 +25,19 @@
     methods: {
       handleWrite() {
         return setInterval(() => {
-          this.$refs.outHere.innerHTML += this.le[this.i];
-          this.i++;
-          if (this.i >= this.le.length) {
-            // this.$refs.outHere.innerHTML = '';
-            // this.i = 0;
-            // let time = new Date().getTime(),
-            //     timend;
-            // do {
-            //   timend = new Date().getTime();
-            // } while (timend - time <= 3000);
-            clearTimeout(this.timer);
+          if (this.le.length > 0) {
+            this.$refs.outHere.innerHTML += this.le[this.i];
+            this.i++;
+            if (this.i >= this.le.length) {
+              // this.$refs.outHere.innerHTML = '';
+              // this.i = 0;
+              // let time = new Date().getTime(),
+              //     timend;
+              // do {
+              //   timend = new Date().getTime();
+              // } while (timend - time <= 3000);
+              clearTimeout(this.timer);
+            }
           }
         }, this.delay);
       },
@@ -49,7 +51,7 @@
   width: 90vw;
   height: 60vh;
   /* padding: .5rem; */
-  background: url('../assets/img/背景1.jpg') center center no-repeat;
+  background: url('../assets/img/背景1.png') center center no-repeat;
   background-size: cover;
   border-radius: 20px;
   animation: bc-drop .8s forwards;

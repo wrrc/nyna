@@ -30,11 +30,12 @@ export default new Vuex.Store({
     },
     isInnerW(s) {
       s.inWidth = window.innerWidth;
-      s.barShrink = s.inWidth >= 630 ? true : false;
+      s.barShrink = s.inWidth >= 670 ? true : false;
     },
     setIsDown(s, v) {
       s.isDown = v.val;
-    }
+    },
+    setNight() {}
   },
   actions: {
 

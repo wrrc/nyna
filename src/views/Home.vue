@@ -1,7 +1,9 @@
 <template>
   <div class="box">
     <!-- <img alt="Vue logo" src="../assets/logo.png" /> -->
-    <OutText msg="简而言之，这是闻人若川写一些东西的地方(～￣▽￣)～" />
+    <div>
+      <OutText v-for="(v,index) in loopImg" :key="index" :imgPath="v.path" :msg="v.text" />
+    </div>
     <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
     <!-- <InArticle /> -->
     <div class="content" :style="{'flex-direction': this.barShrink ? 'row' : 'column'}">
@@ -62,7 +64,24 @@ export default {
   name: 'Home',
   data() {
     return {
-
+      loopImg: [
+        {
+          path: '../assets/img/背景1.jpg',
+          text: '简而言之，这是闻人若川写一些东西的地方(～￣▽￣)～',
+        },
+        // {
+        //   path: '../assets/img/背景2.jpg',
+        //   text: '简而言之，这是闻人若川写一些东西的地方(～￣▽￣)～',
+        // },
+        // {
+        //   path: '../assets/img/背景3.jpg',
+        //   text: '简而言之，这是闻人若川写一些东西的地方(～￣▽￣)～',
+        // },
+        // {
+        //   path: '../assets/img/背景4.jpg',
+        //   text: '简而言之，这是闻人若川写一些东西的地方(～￣▽￣)～',
+        // },
+      ]
     }
   },
   components: {
@@ -213,7 +232,7 @@ export default {
   min-width: .8rem;
   height: .8rem;
   padding: .3rem;
-  color: var(--bcw);
+  color: var(--bcl);
   border-radius: var(--br);
   background-color: rgba(44, 62, 80, 0.2);
 }
