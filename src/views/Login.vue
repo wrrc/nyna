@@ -6,17 +6,22 @@
         <button class="btn" @click="close">✖</button>
       </div>
       <form class="mode-content">
-        <p class="h5">请填写相关信息以进行登录</p>
+        <p class="h5" v-show="!isRegist" style="text-align: center;">
+          请填写相关信息以进行登录
+        </p>
+        <p class="h5" v-show="isRegist" style="text-align: center;">
+          以下为必填项，验证码有效时间只有三分钟
+        </p>
         <input type="email" v-model="froms.email" v-show="isRegist" class="inputc" placeholder="邮箱" />
         <div class="from-different" v-show="isRegist">
-          <input type="text" maxlength="6" v-model="froms.code" class="inputc" placeholder="验证码" />
+          <input type="text" @blur="emailBlur" maxlength="6" v-model="froms.code" class="inputc" placeholder="验证码" />
           <button @click.prevent="registReq" :disabled="disable" :class="{ btn: true, disable: disable}">发送验证码</button>
         </div>
         <input type="text" v-model="froms.nick" class="inputc" placeholder="用户名" />
         <input type="password" v-model="froms.pass" class="inputc" placeholder="密码" />
         <input type="password" v-model="froms.passi" v-show="isRegist" class="inputc" placeholder="重复密码" />
         <div class="from-different" v-show="!isRegist">
-          <input type="text" v-model="froms.verific" class="inputc" placeholder="验证码" maxlength="4" />
+          <input type="number" @blur="pngCodeBlur" v-model="froms.verific" class="inputc" placeholder="验证码" maxlength="4" />
           <a href="#" @click="again" tooltip="点击切换" placement="right">
             <img src="http://127.0.0.1:7001/getCode" alt="加载错误" style="border-radius: 5px;" />
           </a>
@@ -30,8 +35,10 @@
 </template>
 
 <script>
+  import OutText from '@/components/OutText.vue'
   export default {
     name: 'wr-login',
+    components: { OutText },
     data() {
       return {
         froms: {
@@ -48,28 +55,28 @@
         isRegist: false,
       }
     },
-    created() {
-      const time = localStorage.getItem['wait'];
-      console.log('time', time);
-      if (time >= this.delay) {
-
-      }
-    },
+    // created() {
+    //   const time = localStorage.getItem['wait'];
+    //   if (time >= this.delay) {
+    //     console.log(time);
+    //   }
+    // },
     methods: {
       close() {
         this.$router.go(-1);
       },
       registReq(e) {
-        axios.post('/regist', {
-          email: this.froms.email,
-        }).then(({ data }) => {
-          console.log(data);
-          if (data.code === 101) {
+        axios.post(
+          '/regist',
+          { email: this.froms.email },
+          { withCredentials: true }
+        ).then(({ data }) => {
+          if (data.code === 100) {
             this.disable = true;
             let i = 1000;
             this.timre = setInterval(() => {
               const s = (this.delay-i)/1000;
-              localStorage.setItem['wait'] = s;
+              // localStorage.setItem['wait'] = s;
               e.target.innerText = `等待 ${s} 秒`;
               i += 1000;
               if (i >= this.delay) {
@@ -93,8 +100,36 @@
         }
       },
       switchShow(e) {
-        this.isRegist === true ? this.isRegist = false : this.isRegist = true;
+        this.isRegist = !this.isRegist;
         e.target.innerText = e.target.innerText === '登录' ? '注册' : '登录';
+      },
+      pngCodeBlur() {
+        axios({
+          method: 'get',
+          url: '/valiPngCode?code=' + this.froms.verific,
+          withCredentials: true,
+        })
+        .then((res) => {
+          console.log(res);
+        });
+      },
+      // async emailBlur() {
+      //   const res = await axios({
+      //     method: 'get',
+      //     url: '/valiEmailCode?code=' + this.froms.code,
+      //     withCredentials: true,
+      //   });
+      //   console.log(res);
+      // },
+      emailBlur() {
+        axios({
+          method: 'get',
+          url: '/valiEmailCode?code=' + this.froms.code,
+          withCredentials: true,
+        })
+        .then((res) => {
+          console.log(res);
+        });
       },
       again(e) {
         e.target.src = 'http://127.0.0.1:7001/getCode?cd=' + Math.random();
@@ -137,7 +172,6 @@
 }
 
 .mode-content {
-  /* position: relative; */
   display: flex;
   flex-direction: column;
   justify-content: center;

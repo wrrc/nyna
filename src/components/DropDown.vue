@@ -1,5 +1,5 @@
 <template>
-  <div :class="{mode: check}">
+  <div :class="{ mode: modeVisible }">
     <div class="drop_from" :class="{showDown: hei}">
       <span @click="handleClosk" class="close">✖</span>
       <img src="../assets/img/tou.png" alt="头像" width="200px" />
@@ -10,10 +10,10 @@
       <div style="display: flex;flex-direction: column;">
         <div style="display: flex;justify-content: space-around;">
           <label style="color: #fff;">夜间模式</label>
-          <span :class="{ 'swich-btn': true, 'switch-btn-on': check, 'switch-btn-out': !check }" @click="toggle"></span>
+          <span :class="{ 'swich-btn': true, 'switch-btn-on': switchNight, 'switch-btn-out': !switchNight }" @click="toggle"></span>
         </div>
         <div style="display: flex;justify-content: center;margin-top: 15px;">
-          <button class="btn" style="width: 80%;">登录</button>
+          <button class="btn" @click="handleLogin" style="width: 80%;">登录</button>
         </div>
       </div>
     </div>
@@ -24,25 +24,27 @@
   import { mapState } from 'vuex';
   export default {
     name: '',
-    data() {
-      return {
-        check: false,
-      }
-    },
     methods: {
       handleClosk() {
         this.$store.commit({
           type: 'setIsDown',
           val: true,
-        })
+        });
+        this.$store.commit('setModeVisible');
+      },
+      handleLogin() {
+        this.$router.push('/login');
+        this.handleClosk();
       },
       toggle() {
-        this.check = !this.check;
+        this.$store.commit('setNight');
       }
     },
     computed: mapState({
       navSet: 'nav',
-      hei: 'isDown'
+      hei: 'isDown',
+      modeVisible: 'modeVisible',
+      switchNight: 'switchNight'
     })
   }
 </script>
@@ -87,7 +89,6 @@
 }
 
 .drop_item a {
-  /* display: inline-block; */
   width: 85%;
   padding: 6px 12px;
 }
@@ -151,13 +152,11 @@
 }
 
 .switch-btn-on {
-  /* border-color: rgb(200, 19, 187); */
-  background-color: rgb(230, 100, 178);
+  background-color: rgb(220, 10, 200);
 }
 
 .switch-btn-on:after {
   transform: translateX(25px);
-  /* transition: all .5s ease-out; */
   animation: slide-on .3s ease-out forwards;
 }
 

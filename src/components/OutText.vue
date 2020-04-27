@@ -1,13 +1,11 @@
 <template>
-  <div class="box output_box" ref="loopBack">
-    <p class="h3 prints" ref="outHere"></p> <!-- {{writeText}} -->
-  </div>
+    <p class="h3 prints" ref="outHere"></p>
 </template>
 
 <script>
   export default {
     name: 'wr-outText',
-    props: ['imgPath', 'msg'],
+    props: [ 'msg' ],
     data() {
       return {
         delay: 240,
@@ -46,18 +44,6 @@
 </script>
 
 <style scoped>
-.output_box {
-  /* height: 200px; */
-  width: 90vw;
-  height: 60vh;
-  /* padding: .5rem; */
-  background: url('../assets/img/背景1.png') center center no-repeat;
-  background-size: cover;
-  border-radius: 20px;
-  animation: bc-drop .8s forwards;
-  /* transition: all .3s ease; */
-}
-
 .prints::after{
   content: ' _';
   animation: glint 1s infinite;

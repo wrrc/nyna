@@ -10,7 +10,7 @@
     <div class="attach">
       <button v-show="!barShrink" class="btn" @click="dropDown" tooltip="查看更多" :placement="isPosition">👀</button>
       <button v-show="barShrink" class="btn" tooltip="设置" :placement="isPosition">⚙</button>
-      <button v-show="barShrink" @click="handleNight" class="btn" tooltip="夜间模式" :placement="isPosition">🌞</button>
+      <button v-show="barShrink" @click="handleNight" class="btn" tooltip="夜间模式" :placement="isPosition">{{ sonOrNight }}</button>
       <button v-show="barShrink" @click="handleLogin" class="btn" tooltip="登录" :placement="isPosition">📡</button>
     </div>
   </div>
@@ -32,20 +32,11 @@
           type: 'setIsDown',
           val: false,
         });
+        this.$store.commit('setModeVisible');
         // document.body.style.filter = 'blur(5px)';
       },
-      handleNight(e) {
-        if (e.target.innerHTML === '🌞') {
-          e.target.innerHTML = '🌙';
-          document.documentElement.style.setProperty('--bcl', '#171d20');
-          document.documentElement.style.setProperty('--bcw', '#2C3E50');
-          document.documentElement.style.setProperty('--bcb', 'ghostwhite');
-        }else {
-          e.target.innerHTML = '🌞';
-          document.documentElement.style.setProperty('--bcl', 'ghostwhite');
-          document.documentElement.style.setProperty('--bcw', '#fff');
-          document.documentElement.style.setProperty('--bcb', '#2C3E50');
-        }
+      handleNight() {
+        this.$store.commit('setNight');
       },
       handleLogin() {
         this.$router.push('/login');
@@ -60,6 +51,7 @@
       // 传字符串参数 'bide' 等同于 `state => state.bide`
       bide: 'backIsShow',
       barShrink: 'barShrink',
+      sonOrNight: 'sonOrNight',
     }),
     watch: {
       handleSearch(newValue, oldValue) {},

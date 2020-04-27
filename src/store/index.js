@@ -12,6 +12,9 @@ export default new Vuex.Store({
     backIsShow: false,
     barShrink: false,
     isDown: true,
+    modeVisible: false,
+    sonOrNight: '🌞',
+    switchNight: false,
   },
   mutations: {
     increment(state) {
@@ -35,7 +38,24 @@ export default new Vuex.Store({
     setIsDown(s, v) {
       s.isDown = v.val;
     },
-    setNight() {}
+    setModeVisible(s) {
+      s.modeVisible = !s.modeVisible;
+    },
+    setNight(s) {
+      if (s.sonOrNight === '🌞') {
+        s.switchNight = true;
+        s.sonOrNight = '🌙';
+        document.documentElement.style.setProperty('--bcl', '#171d20');
+        document.documentElement.style.setProperty('--bcw', '#2C3E50');
+        document.documentElement.style.setProperty('--bcb', 'ghostwhite');
+      } else {
+        s.switchNight = false;
+        s.sonOrNight = '🌞';
+        document.documentElement.style.setProperty('--bcl', 'ghostwhite');
+        document.documentElement.style.setProperty('--bcw', '#fff');
+        document.documentElement.style.setProperty('--bcb', '#2C3E50');
+      }
+    },
   },
   actions: {
 

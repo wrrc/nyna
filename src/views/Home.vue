@@ -1,8 +1,8 @@
 <template>
   <div class="box">
     <!-- <img alt="Vue logo" src="../assets/logo.png" /> -->
-    <div>
-      <OutText v-for="(v,index) in loopImg" :key="index" :imgPath="v.path" :msg="v.text" />
+    <div class="box output_box">
+      <OutText v-for="(v,index) in loopImg" :key="index" :msg="v.text" />
     </div>
     <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
     <!-- <InArticle /> -->
@@ -98,6 +98,17 @@ export default {
 </script>
 
 <style scoped>
+.output_box {
+  width: 90vw;
+  height: 60vh;
+  padding: 0 1rem;
+  background: url('../assets/img/背景1.png') center center no-repeat;
+  background-size: cover;
+  border-radius: 20px;
+  animation: bc-drop .8s forwards;
+  /* transition: all .3s ease; */
+}
+
 .content {
   width: 90%;
   display: flex;
@@ -153,11 +164,15 @@ export default {
   background-clip: border-box;
   /* border: 1px solid #eee; */
   border-radius: 5px;
+  will-change: animation;
   /* transition: all 0.3s ease; */
 }
 
 .card:hover {
   animation: enlarge 1s forwards;
+    -moz-animation: enlarge 1s forwards;
+    -o-animation: enlarge 1s forwards;
+    -webkit-animation: enlarge 1s forwards;
   z-index: 5;
 }
 
@@ -166,7 +181,8 @@ export default {
     transform: scale(100%, 100%);
   }
   to {
-    transform: scale(120%, 120%);
+    transform: scale(110%, 110%);
+    box-shadow: var(--boxSha);
   }
 }
 
@@ -175,12 +191,7 @@ export default {
   justify-content: space-between;
   padding: 1.25rem;
   margin: 0;
-  /* background-color: rgba(44, 62, 80, 0.03); */
   border-bottom-width: 80%;
-  /* border-bottom: 1px solid rgba(44, 62, 80, 0.125); */
-
-  /* text-align: center; */
-
 }
 
 .card-header:first-child {
@@ -236,18 +247,4 @@ export default {
   border-radius: var(--br);
   background-color: rgba(44, 62, 80, 0.2);
 }
-
-/* .flag::after{
-  position: absolute;
-  top: -40%;
-  display: inline-block;
-  width: .8rem;
-  height: .8rem;
-  padding: .3rem .2rem .3rem .4rem;
-  line-height: .8rem;
-  content: attr(promp);
-  color: var(--bcl);
-  border-radius: 50%;
-  background-color: var(--bcb);
-} */
 </style>
