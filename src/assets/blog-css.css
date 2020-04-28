@@ -434,6 +434,46 @@ button:active {
   }
 }
 
+/* alert 弹窗过渡 */
+.alert-top-enter-active,
+.alert-top-leave-active {
+  width: 100%;
+  position: absolute;
+  left: 0;right: 0;
+  margin: 0 auto;
+  will-change: transform;
+}
+
+.alert-top-enter-active {
+  animation: in-top 1s forwards;
+}
+
+.alert-top-leave-active {
+  animation: out-top 1s forwards;
+}
+
+@keyframes in-top {
+  from {
+    transform: translateY(200%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: .8;
+  }
+}
+
+@keyframes out-top {
+  from {
+    transform: scale(100%, 100%);
+    opacity: .8;
+  }
+  to {
+    transform: scale(0 ,0);
+    opacity: 0;
+  }
+}
+
 /* tooltip样式 */
 [tooltip] {
   position: relative;

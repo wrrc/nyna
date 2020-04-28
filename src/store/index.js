@@ -15,6 +15,7 @@ export default new Vuex.Store({
     modeVisible: false,
     sonOrNight: '🌞',
     switchNight: false,
+    alertInfo: [],
   },
   mutations: {
     increment(state) {
@@ -56,6 +57,23 @@ export default new Vuex.Store({
         document.documentElement.style.setProperty('--bcb', '#2C3E50');
       }
     },
+    setAlertInfo(s, v) {
+      // if (s.alertInfo.length >= 1) {
+        s.alertInfo.shift();
+      // }
+      s.alertInfo.push(v);
+      // let timer = null;
+      // (() => {
+        // if (s.alertInfo.length >= 1) {
+          setTimeout(() => {
+            s.alertInfo.shift();
+            console.log('object');
+          }, 2000);
+        // } else if (s.alertInfo.length === 1) {
+          // clearInterval(timer);
+        // }
+      // })()
+    }
   },
   actions: {
 

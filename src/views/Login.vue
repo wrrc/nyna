@@ -10,22 +10,47 @@
           请填写相关信息以进行登录
         </p>
         <p class="h5" v-show="isRegist" style="text-align: center;">
-          以下为必填项，验证码有效时间只有三分钟
+          验证码有效时间只有三分钟...
         </p>
-        <input type="email" v-model="froms.email" v-show="isRegist" class="inputc" placeholder="邮箱" />
-        <div class="from-different" v-show="isRegist">
-          <input type="text" @blur="emailBlur" maxlength="6" v-model="froms.code" class="inputc" placeholder="验证码" />
-          <button @click.prevent="registReq" :disabled="disable" :class="{ btn: true, disable: disable}">发送验证码</button>
+        <div class="enter-input" v-show="isRegist">
+          <input type="email" @blur="emailBlur" v-model="froms.email" class="inputc" placeholder="邮箱" />
+          <span></span>
         </div>
-        <input type="text" v-model="froms.nick" class="inputc" placeholder="用户名" />
-        <input type="password" v-model="froms.pass" class="inputc" placeholder="密码" />
-        <input type="password" v-model="froms.passi" v-show="isRegist" class="inputc" placeholder="重复密码" />
-        <div class="from-different" v-show="!isRegist">
-          <input type="number" @blur="pngCodeBlur" v-model="froms.verific" class="inputc" placeholder="验证码" maxlength="4" />
+        <span class="tip">{{ tip.email }}</span>
+
+        <div class="enter-input" v-show="isRegist">
+          <input type="text" @blur="emailCodeBlur" v-model="froms.code" class="inputc" maxlength="6" placeholder="验证码" />
+          <span></span>
+          <button @click.prevent="reqCode" :disabled="disable" :class="{ btn: true, disable: disable}">发送验证码</button>
+        </div>
+        <span class="tip">{{ tip.code }}</span>
+
+        <div class="enter-input">
+          <input type="text" @blur="nickBlur" v-model="froms.nick" class="inputc" placeholder="用户名" />
+          <span></span>
+        </div>
+        <span class="tip">{{ tip.nick }}</span>
+
+        <div class="enter-input">
+          <input type="password" @blur="passBlur" v-model="froms.pass" class="inputc" placeholder="密码" />
+          <span></span>
+        </div>
+        <span class="tip">{{ tip.pass }}</span>
+
+        <div class="enter-input" v-show="isRegist">
+          <input type="password" @blur="passiBlur" v-model="froms.passi" class="inputc" placeholder="重复密码" />
+          <span></span>
+        </div>
+        <span class="tip">{{ tip.passi }}</span>
+
+        <div class="enter-input" v-show="!isRegist">
+          <input type="text" @blur="pngCodeBlur" v-model="froms.verific" class="inputc" maxlength="4" placeholder="验证码" />
+          <span></span>
           <a href="#" @click="again" tooltip="点击切换" placement="right">
             <img src="http://127.0.0.1:7001/getCode" alt="加载错误" style="border-radius: 5px;" />
           </a>
         </div>
+        <span class="tip">{{ tip.verific }}</span>
       </form>
       <div class="mode-footer">
         <button class="btn" @click="handleLogin">(☞ﾟヮﾟ)👉</button>
@@ -35,19 +60,28 @@
 </template>
 
 <script>
-  import OutText from '@/components/OutText.vue'
+  import OutText from '@/components/OutText.vue';
+
   export default {
     name: 'wr-login',
     components: { OutText },
     data() {
       return {
         froms: {
-          email: 'binghuaziyun1998@163.com',
+          email: '',
           code: '',
-          nick: 'er',
-          pass: '123456',
+          nick: '',
+          pass: '',
           passi: '',
-          verific: ''
+          verific: '',
+        },
+        tip: {
+          email: '',
+          code: '',
+          nick: '',
+          pass: '',
+          passi: '',
+          verific: '',
         },
         disable: false,
         timre: null,
@@ -55,28 +89,34 @@
         isRegist: false,
       }
     },
-    // created() {
-    //   const time = localStorage.getItem['wait'];
-    //   if (time >= this.delay) {
-    //     console.log(time);
-    //   }
-    // },
+    /* created() {
+      const time = window.localStorage.getItem['wait'];
+      console.log(time);
+      if (time >= this.delay) {
+        console.log(time);
+      }
+    }, */
     methods: {
+      switchShow(e) {
+        this.isRegist = !this.isRegist;
+        e.target.innerText = e.target.innerText === '登录' ? '注册' : '登录';
+      },
       close() {
         this.$router.go(-1);
       },
-      registReq(e) {
-        axios.post(
-          '/regist',
-          { email: this.froms.email },
-          { withCredentials: true }
-        ).then(({ data }) => {
+      reqCode(e) {
+        axios
+        .post(
+          '/getEmailCode',
+          { email: this.froms.email }
+        )
+        .then(({ data }) => {
           if (data.code === 100) {
             this.disable = true;
             let i = 1000;
             this.timre = setInterval(() => {
               const s = (this.delay-i)/1000;
-              // localStorage.setItem['wait'] = s;
+              // window.localStorage.setItem['wait'] = `${s}`;
               e.target.innerText = `等待 ${s} 秒`;
               i += 1000;
               if (i >= this.delay) {
@@ -91,45 +131,126 @@
         })
       },
       handleLogin() {
+        // 登录
         if (!this.isRegist) {
-
-          axios.post('/login', this.froms)
-            .then(res => console.log('用户名或密码错误'))
+          const { nick, pass, verific } = this.froms;
+          if (nick && pass && verific) {
+            axios.post('/login', { nick, pass, verific })
+            .then(res => { this.$store.commit(
+              'setAlertInfo',
+              {
+                color: 3,
+                msg: '用户名或密码错误'
+              })
+            })
+          } else {
+            this.$store.commit(
+              'setAlertInfo',
+              {
+                color: 2,
+                msg: '请填写完整信息'
+            });
+          }
         } else {
-          axios.post('/regist')
+          // 注册
+          const { email, code, nick, pass, passi } = this.froms;
+          if (email && code && nick && pass && passi) {
+            axios.post('/users', { email, code, nick, pass })
+            .then(({ data }) => {
+              let c, m = data.message;
+              if (data.code === 104) {
+                c = 1;
+              } else if (data.code === 101005) {
+                c = 3;
+              } else if (data.code === 101004) {
+                c = 2;
+              }
+              this.$store.commit('setAlertInfo', {
+                color: c,
+                msg: m
+              })
+            })
+          } else {
+            this.$store.commit(
+              'setAlertInfo',
+              {
+                color: 2,
+                msg: '请填写完整信息'
+            });
+          }
+
         }
       },
-      switchShow(e) {
-        this.isRegist = !this.isRegist;
-        e.target.innerText = e.target.innerText === '登录' ? '注册' : '登录';
-      },
       pngCodeBlur() {
-        axios({
-          method: 'get',
-          url: '/valiPngCode?code=' + this.froms.verific,
-          withCredentials: true,
-        })
-        .then((res) => {
-          console.log(res);
-        });
+        if (this.froms.verific !== '') {
+          axios({
+            method: 'get',
+            url: '/valiPngCode?code=' + this.froms.verific,
+          })
+          .then(({ data }) => {
+            if (data.code === 100) {
+              this.tip.verific = '✔ 验证成功';
+            } else {
+              this.tip.verific = '❌ 验证码错了欸';
+            }
+          });
+        } else {
+          this.tip.verific = '* 此为必填项';
+        }
       },
-      // async emailBlur() {
-      //   const res = await axios({
-      //     method: 'get',
-      //     url: '/valiEmailCode?code=' + this.froms.code,
-      //     withCredentials: true,
-      //   });
-      //   console.log(res);
-      // },
+      emailCodeBlur() {
+        let txt = '';
+        if (this.froms.code === '') {
+          txt = '* 此为必填项';
+        //   axios({
+        //     method: 'get',
+        //     url: '/valiEmailCode?code=' + this.froms.code,
+        //   })
+        //   .then(({ data }) => {
+        //     if (data.code === 100) {
+        //       this.tip.code = '✔ 验证成功';
+        //     } else {
+        //       this.tip.code = '❌ 验证码错了欸';
+        //     }
+        //   });
+        // } else {
+        //   this.tip.code = '* 此为必填项';
+        }
+        this.tip.code = txt;
+      },
       emailBlur() {
-        axios({
-          method: 'get',
-          url: '/valiEmailCode?code=' + this.froms.code,
-          withCredentials: true,
-        })
-        .then((res) => {
-          console.log(res);
-        });
+        let txt = '';
+        if (this.froms.email === '') {
+          txt = '* 此为必填项';
+        } /* else if (/^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/.test(this.froms.email)) {
+          txt = '* 邮箱格式错误';
+        } */
+        this.tip.email = txt;
+      },
+      nickBlur() {
+        let txt = '';
+        if (this.froms.nick === '') {
+          txt = '* 此为必填项';
+        }
+        this.tip.nick = txt;
+      },
+      passBlur() {
+        let txt = '';
+        if (this.froms.pass === '') {
+          txt = '* 此为必填项';
+        } else if (this.froms.pass.length < 6 || /[A-Z@#\$%\^\&\*]/.test(this.froms.pass)) {
+          txt = '* 您的密码强度似乎不够哦，当然如果你坚持...';
+        }
+        this.tip.pass = txt;
+      },
+      passiBlur() {
+        let txt = '';
+        if (this.froms.passi === '') {
+          txt = '* 此为必填项';
+        } else if (this.froms.pass !== this.froms.passi) {
+          txt = '* 两次密码似乎不一致哦，请重新输入';
+        }
+        this.tip.passi = txt;
       },
       again(e) {
         e.target.src = 'http://127.0.0.1:7001/getCode?cd=' + Math.random();
@@ -142,7 +263,7 @@
 .mode {
   position: fixed;
   top: 0;left: 0;right: 0;bottom: 0;
-  z-index: 100;
+  z-index: 50;
   background: rgba(241, 241, 240, .5);
   transition: background .5s ease-out;
 }
@@ -178,38 +299,64 @@
   padding: 2rem 3rem;
 }
 
-.inputc {
-  width: 80%;
-  height: 25px;
-  padding: var(--pad);
-  margin: .5rem auto;
-  border: 0;
-  font-size: 1rem;
-  color: var(--bcb);
-  border-radius: var(--br);
-  background-color: #e6ebe6;
-  /* border: 1px solid #e3e3e3; */
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
-          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
-  transition: all .8s ease;
-}
-
-.inputc:focus {
-  background-color: var(--bcw);
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-          box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-}
-
-.from-different {
+.enter-input {
   position: relative;
   display: flex;
   justify-content: center;
 }
 
-.from-different button, .from-different a {
+.enter-input button, .enter-input a {
   position: absolute;
   top: 12px;
   right: 35px;
+}
+
+.inputc {
+  width: 80%;
+  height: 25px;
+  padding: var(--pad);
+  margin: .5rem auto;
+  outline: none;
+  border: none;
+  font-size: 1rem;
+  color: var(--bcb);
+  border-radius: var(--br);
+  background: #e6ebe6;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+  transition: all .5s ease;
+}
+
+.inputc + span {
+  width: 85%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 7px;
+  height: 2px;
+  margin: 0 auto;
+  background-color: var(--bcb);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.3s ease-out;
+}
+
+.inputc:focus {
+  background-color: var(--bcw);
+  -webkit-box-shadow: 0 0 0 var(--bcw);
+          box-shadow: 0 0 0 var(--bcw);
+}
+
+.inputc:focus + span {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+.tip {
+  margin-left: 7%;
+  color: rgba(200, 50, 50, .8);
+  font-size: x-small;
+  animation: in-top 1s forwards;
 }
 
 .disable {

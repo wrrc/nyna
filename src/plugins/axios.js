@@ -17,9 +17,9 @@ let config = {
     },
     post: {
       'Content-Type': 'application/json;charset=utf-8'
-    }
-  }
-  // withCredentials: true, // Check cross-site Access-Control
+    },
+  },
+  withCredentials: true, // Check cross-site Access-Control
 };
 
 const _axios = axios.create(config);

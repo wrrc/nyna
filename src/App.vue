@@ -2,6 +2,7 @@
   <div>
     <DropDown />
     <Nav isPosition="bottom" />
+    <wr-alert></wr-alert>
     <div class="container">
       <transition :name="transitionName">
         <router-view />
