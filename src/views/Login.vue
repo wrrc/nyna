@@ -2,7 +2,7 @@
   <div class="mode">
     <div class="mode-dialog">
       <div class="mode-header">
-        <button class="btn" @click="switchShow">注册</button>
+        <button class="btn" ref="withRegist" @click="switchShow">注册</button>
         <button class="btn" @click="close">✖</button>
       </div>
       <form class="mode-content">
@@ -47,7 +47,7 @@
           <input type="text" @blur="pngCodeBlur" v-model="froms.verific" class="inputc" maxlength="4" placeholder="验证码" />
           <span></span>
           <a href="#" @click="again" tooltip="点击切换" placement="right">
-            <img src="http://127.0.0.1:7001/getCode" alt="加载错误" style="border-radius: 5px;" />
+            <img src="http://127.0.0.1:7001/getCode" alt="重新加载" style="border-radius: 5px;" />
           </a>
         </div>
         <span class="tip">{{ tip.verific }}</span>
@@ -97,9 +97,9 @@
       }
     }, */
     methods: {
-      switchShow(e) {
+      switchShow() {
         this.isRegist = !this.isRegist;
-        e.target.innerText = e.target.innerText === '登录' ? '注册' : '登录';
+        this.$refs.withRegist.innerText = this.$refs.withRegist.innerText === '登录' ? '注册' : '登录';
       },
       close() {
         this.$router.go(-1);
@@ -136,12 +136,11 @@
           const { nick, pass, verific } = this.froms;
           if (nick && pass && verific) {
             axios.post('/login', { nick, pass, verific })
-            .then(res => { this.$store.commit(
-              'setAlertInfo',
-              {
-                color: 3,
-                msg: '用户名或密码错误'
-              })
+            .then(({ data }) => {
+              if (data.code === 105) {
+                this.$router.push('/');
+                this.$store.commit('setToken', data.dataSet);
+              }
             })
           } else {
             this.$store.commit(
@@ -157,18 +156,11 @@
           if (email && code && nick && pass && passi) {
             axios.post('/users', { email, code, nick, pass })
             .then(({ data }) => {
-              let c, m = data.message;
+              let c;
               if (data.code === 104) {
-                c = 1;
-              } else if (data.code === 101005) {
-                c = 3;
-              } else if (data.code === 101004) {
-                c = 2;
+                this.switchShow();
+
               }
-              this.$store.commit('setAlertInfo', {
-                color: c,
-                msg: m
-              })
             })
           } else {
             this.$store.commit(
@@ -202,19 +194,6 @@
         let txt = '';
         if (this.froms.code === '') {
           txt = '* 此为必填项';
-        //   axios({
-        //     method: 'get',
-        //     url: '/valiEmailCode?code=' + this.froms.code,
-        //   })
-        //   .then(({ data }) => {
-        //     if (data.code === 100) {
-        //       this.tip.code = '✔ 验证成功';
-        //     } else {
-        //       this.tip.code = '❌ 验证码错了欸';
-        //     }
-        //   });
-        // } else {
-        //   this.tip.code = '* 此为必填项';
         }
         this.tip.code = txt;
       },
@@ -239,7 +218,7 @@
         if (this.froms.pass === '') {
           txt = '* 此为必填项';
         } else if (this.froms.pass.length < 6 || /[A-Z@#\$%\^\&\*]/.test(this.froms.pass)) {
-          txt = '* 您的密码强度似乎不够哦，当然如果你坚持...';
+          this.isRegist && (txt = '* 您的密码强度似乎不够哦，当然如果你坚持...');
         }
         this.tip.pass = txt;
       },

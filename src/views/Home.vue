@@ -99,9 +99,9 @@ export default {
 
 <style scoped>
 .output_box {
-  width: 90vw;
+  width: 85vw;
   height: 60vh;
-  padding: 0 1rem;
+  padding: 0;
   background: url('../assets/img/背景1.png') center center no-repeat;
   background-size: cover;
   border-radius: 20px;
@@ -243,8 +243,8 @@ export default {
   min-width: .8rem;
   height: .8rem;
   padding: .3rem;
-  color: var(--bcl);
-  border-radius: var(--br);
-  background-color: rgba(44, 62, 80, 0.2);
+  color: var(--bcb);
+  /* border-radius: var(--br); */
+  /* background-color: rgba(44, 62, 80, 0.2); */
 }
 </style>

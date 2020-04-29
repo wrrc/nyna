@@ -16,6 +16,7 @@ export default new Vuex.Store({
     sonOrNight: '🌞',
     switchNight: false,
     alertInfo: [],
+    token: '',
   },
   mutations: {
     increment(state) {
@@ -58,28 +59,21 @@ export default new Vuex.Store({
       }
     },
     setAlertInfo(s, v) {
-      // if (s.alertInfo.length >= 1) {
-        s.alertInfo.shift();
-      // }
+      s.alertInfo.shift();
       s.alertInfo.push(v);
-      // let timer = null;
-      // (() => {
-        // if (s.alertInfo.length >= 1) {
-          setTimeout(() => {
-            s.alertInfo.shift();
-            console.log('object');
-          }, 2000);
-        // } else if (s.alertInfo.length === 1) {
-          // clearInterval(timer);
-        // }
-      // })()
-    }
+      setTimeout(() => {
+        s.alertInfo.shift();
+      }, 3000);
+    },
+    setToken(s, v) {
+      s.token = v;
+    },
   },
   actions: {
 
     // 获取导航栏信息
     getNav({ commit }) {
-      axios.get('/home').then(({ data }) => {
+      axios.get('/nav').then(({ data }) => {
         if (data.code === 100) {
           // 对象方式分发
           commit({

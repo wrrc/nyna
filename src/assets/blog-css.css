@@ -437,19 +437,16 @@ button:active {
 /* alert 弹窗过渡 */
 .alert-top-enter-active,
 .alert-top-leave-active {
-  width: 100%;
-  position: absolute;
-  left: 0;right: 0;
-  margin: 0 auto;
-  will-change: transform;
+  /* width: 35%; */
+  will-change: transform opacity;
 }
 
 .alert-top-enter-active {
-  animation: in-top 1s forwards;
+  animation: in-top .5s forwards;
 }
 
 .alert-top-leave-active {
-  animation: out-top 1s forwards;
+  animation: out-top .3s forwards;
 }
 
 @keyframes in-top {
@@ -459,17 +456,17 @@ button:active {
   }
   to {
     transform: translateY(0);
-    opacity: .8;
+    opacity: .9;
   }
 }
 
 @keyframes out-top {
   from {
-    transform: scale(100%, 100%);
-    opacity: .8;
+    transform: translateY(0);
+    opacity: .9;
   }
   to {
-    transform: scale(0 ,0);
+    transform: translateY(-160%);
     opacity: 0;
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div :class="{bar: true, bide: bide}">
-    <router-link to="/" class="log" tooltip="别点，点就是首页" :placement="isPosition">💌</router-link>
+    <router-link to="/" class="log" tooltip="别点，点就是首页" :placement="isPosition">🎊</router-link>
     <div class="nav" v-show="barShrink">
       <router-link v-for="(item, index) in navSet" :key="index" :to="item.nav_path">{{item.nav_name}}</router-link>
     </div>
@@ -11,7 +11,7 @@
       <button v-show="!barShrink" class="btn" @click="dropDown" tooltip="查看更多" :placement="isPosition">👀</button>
       <button v-show="barShrink" class="btn" tooltip="设置" :placement="isPosition">⚙</button>
       <button v-show="barShrink" @click="handleNight" class="btn" tooltip="夜间模式" :placement="isPosition">{{ sonOrNight }}</button>
-      <button v-show="barShrink" @click="handleLogin" class="btn" tooltip="登录" :placement="isPosition">📡</button>
+      <button v-show="barShrink" @click="handleLogin" class="btn" tooltip="登录" :placement="isPosition">🚀</button>
     </div>
   </div>
 </template>
