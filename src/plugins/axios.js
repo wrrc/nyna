@@ -3,6 +3,7 @@
 import Vue from 'vue';
 import axios from 'axios';
 import store from '../store';
+import router from '../router';
 
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
@@ -75,11 +76,12 @@ _axios.interceptors.response.use(
             color: 4,
             msg: response.data.message,
           });
+          router.push('/login');
           break;
         default: break;
       };
     }
-    return response;
+    return response.data;
   },
   function(error) {
     // Do something with response error

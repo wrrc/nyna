@@ -3,12 +3,12 @@
     <DropDown />
     <Nav isPosition="bottom" />
     <wr-alert></wr-alert>
-    <div class="container">
+    <!-- <div class="container"> -->
       <transition :name="transitionName">
         <router-view />
       </transition>
-      <BackTop />
-    </div>
+    <!-- </div> -->
+    <BackTop />
   </div>
 </template>
 

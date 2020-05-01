@@ -110,7 +110,7 @@
           '/getEmailCode',
           { email: this.froms.email }
         )
-        .then(({ data }) => {
+        .then((data) => {
           if (data.code === 100) {
             this.disable = true;
             let i = 1000;
@@ -136,7 +136,7 @@
           const { nick, pass, verific } = this.froms;
           if (nick && pass && verific) {
             axios.post('/login', { nick, pass, verific })
-            .then(({ data }) => {
+            .then((data) => {
               if (data.code === 105) {
                 this.$router.push('/');
                 this.$store.commit('setToken', data.dataSet);
@@ -155,7 +155,7 @@
           const { email, code, nick, pass, passi } = this.froms;
           if (email && code && nick && pass && passi) {
             axios.post('/users', { email, code, nick, pass })
-            .then(({ data }) => {
+            .then((data) => {
               let c;
               if (data.code === 104) {
                 this.switchShow();
@@ -179,7 +179,7 @@
             method: 'get',
             url: '/valiPngCode?code=' + this.froms.verific,
           })
-          .then(({ data }) => {
+          .then((data) => {
             if (data.code === 100) {
               this.tip.verific = '✔ 验证成功';
             } else {
@@ -278,58 +278,6 @@
   padding: 2rem 3rem;
 }
 
-.enter-input {
-  position: relative;
-  display: flex;
-  justify-content: center;
-}
-
-.enter-input button, .enter-input a {
-  position: absolute;
-  top: 12px;
-  right: 35px;
-}
-
-.inputc {
-  width: 80%;
-  height: 25px;
-  padding: var(--pad);
-  margin: .5rem auto;
-  outline: none;
-  border: none;
-  font-size: 1rem;
-  color: var(--bcb);
-  border-radius: var(--br);
-  background: #e6ebe6;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
-          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
-  transition: all .5s ease;
-}
-
-.inputc + span {
-  width: 85%;
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 7px;
-  height: 2px;
-  margin: 0 auto;
-  background-color: var(--bcb);
-  transform: scaleX(0);
-  transform-origin: right center;
-  transition: transform 0.3s ease-out;
-}
-
-.inputc:focus {
-  background-color: var(--bcw);
-  -webkit-box-shadow: 0 0 0 var(--bcw);
-          box-shadow: 0 0 0 var(--bcw);
-}
-
-.inputc:focus + span {
-  transform: scaleX(1);
-  transform-origin: left center;
-}
 
 .tip {
   margin-left: 7%;

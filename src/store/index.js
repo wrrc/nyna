@@ -73,7 +73,7 @@ export default new Vuex.Store({
 
     // 获取导航栏信息
     getNav({ commit }) {
-      axios.get('/nav').then(({ data }) => {
+      axios.get('/nav').then((data) => {
         if (data.code === 100) {
           // 对象方式分发
           commit({

@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Stroe from '../store/index'
+import { Store } from 'vuex'
 
 Vue.use(VueRouter)
 
@@ -28,11 +30,23 @@ const routes = [
     name: 'FriendsLink',
     component: () => import('../views/FriendsLink.vue')
   },
-    {
-      path: '/login',
-      name: 'Login',
-      component: () => import('../views/Login.vue')
-    },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('../views/Login.vue')
+  },
+  {
+    path: '/write',
+    name: 'Write',
+    component: () => import('../views/Write.vue'),
+    beforeEnter: (to, from, next) => {
+      if (Stroe.state.token) {
+        next();
+      } else {
+        Store.commit()
+      }
+    }
+  },
   {
     path: '*',
     name: 'NotFind',
