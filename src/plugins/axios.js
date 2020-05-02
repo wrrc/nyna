@@ -57,7 +57,7 @@ _axios.interceptors.response.use(
           break;
         case 201:
         case 101004:
-        case 201001:
+        case 101009:
           store.commit('setAlertInfo', {
             color: 2,
             msg: response.data.message,
@@ -66,6 +66,8 @@ _axios.interceptors.response.use(
         case 101002:
         case 101003:
         case 101007:
+        case 101010:
+        case 201001:
           store.commit('setAlertInfo', {
             color: 3,
             msg: response.data.message,

@@ -27,7 +27,9 @@ export default {
       this.$store.dispatch('getNav');
     }
     this.$store.dispatch('scrollSlideEvent');
-    this.$store.commit('isInnerW')
+    this.$store.commit('isInnerW');
+    const token = sessionStorage.getItem('userToken');
+    this.$store.commit('setToken', token);
   },
   watch: {
     '$route' (to, from) {

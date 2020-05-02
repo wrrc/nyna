@@ -50,12 +50,14 @@ export default new Vuex.Store({
         document.documentElement.style.setProperty('--bcl', '#171d20');
         document.documentElement.style.setProperty('--bcw', '#2C3E50');
         document.documentElement.style.setProperty('--bcb', 'ghostwhite');
+        document.documentElement.style.setProperty('--bcy', '#2C3E50');
       } else {
         s.switchNight = false;
         s.sonOrNight = '🌞';
         document.documentElement.style.setProperty('--bcl', 'ghostwhite');
         document.documentElement.style.setProperty('--bcw', '#fff');
         document.documentElement.style.setProperty('--bcb', '#2C3E50');
+        document.documentElement.style.setProperty('--bcy', '#f9f9f9');
       }
     },
     setAlertInfo(s, v) {

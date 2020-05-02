@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Stroe from '../store/index'
-import { Store } from 'vuex'
+import Store from '../store/index'
 
 Vue.use(VueRouter)
 
@@ -40,10 +39,15 @@ const routes = [
     name: 'Write',
     component: () => import('../views/Write.vue'),
     beforeEnter: (to, from, next) => {
-      if (Stroe.state.token) {
+      const token = sessionStorage.getItem('userToken');
+      if (token) {
         next();
       } else {
-        Store.commit()
+        Store.commit('setAlertInfo', {
+          color: 2,
+          msg: '您还没有登录...',
+        })
+        next({ path: '/login' });
       }
     }
   },

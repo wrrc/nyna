@@ -38,7 +38,7 @@
   margin: .5rem;
   color: var(--bcw);
   background-color: var(--bcb);
-  border-radius: 5px;
+  border-radius: var(--br);
   font-size: x-small;
   cursor: pointer;
 }

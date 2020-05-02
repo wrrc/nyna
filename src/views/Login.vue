@@ -60,11 +60,11 @@
 </template>
 
 <script>
-  import OutText from '@/components/OutText.vue';
+  // import OutText from '@/components/OutText.vue';
 
   export default {
     name: 'wr-login',
-    components: { OutText },
+    // components: { OutText },
     data() {
       return {
         froms: {
@@ -140,6 +140,8 @@
               if (data.code === 105) {
                 this.$router.push('/');
                 this.$store.commit('setToken', data.dataSet);
+                console.log('logintoken', data.dataSet);
+                sessionStorage.setItem('userToken', data.dataSet);
               }
             })
           } else {
