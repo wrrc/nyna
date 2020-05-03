@@ -25,7 +25,7 @@
   position: fixed;
   left: 0;right: 0;
   margin: 4em auto;
-  z-index: 60;
+  z-index: 3000;
 }
 
 .alert {

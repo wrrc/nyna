@@ -9,9 +9,16 @@
 # }
 
 # 请求 nav
-GET http://127.0.0.1:7001/home HTTP/1.1
-content-type: application/json
+# GET http://127.0.0.1:7001/home HTTP/1.1
+# content-type: application/json
 # { name: '🎊 主页', path: '/' },
 # { name: '📻 分类', path: '/typeOrTag' },
 # { name: '🎟 友链', path: '/friendsLink' },
 # { name: '🎏 关于', path: '/about' }
+
+POST http://127.0.0.1:7001/classes HTTP/1.1
+content-type: application/json
+{
+  "gid": "e9178f95-8ce4-11ea-804c-049226021399",
+  "name": "后端"
+}

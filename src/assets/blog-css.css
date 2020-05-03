@@ -149,8 +149,8 @@ button:active {
   border-radius: var(--br);
   /* background-color: #e6ebe6; */
   cursor: pointer;
-  -webkit-box-shadow: 0 1px 0 rgba(66, 66, 66, .15);
-          box-shadow: 0 1px 0 rgba(66, 66, 66, .15);
+  /* -webkit-box-shadow: 0 1px 0 rgba(66, 66, 66, .15);
+          box-shadow: 0 1px 0 rgba(66, 66, 66, .15); */
   transition: all .3s ease;
 }
 
@@ -245,7 +245,7 @@ button:active {
   border-radius: var(--br);
   background-color: var(--bcw);
   box-shadow: 0 20px 40px -15px rgba(0,0,0,.2);
-  z-index: 9;
+  z-index: 1600;
   transition: all .3s ease;
 }
 
@@ -328,7 +328,7 @@ button:active {
   margin: .5rem auto;
   outline: none;
   border: none;
-  font-size: 1rem;
+  font-size: .9rem;
   color: var(--bcb);
   border-radius: var(--br);
   background: #e6ebe6;
@@ -520,7 +520,7 @@ button:active {
   position: absolute;
   border: 5px solid transparent;
   border-bottom-width: 0;
-  z-index: 10;
+  z-index: 2000;
 }
 
 [tooltip]::after {
@@ -534,7 +534,7 @@ button:active {
   max-width: 200px;
   border-radius: var(--br);
   box-shadow: var(--boxSha);
-  z-index: 10;
+  z-index: 2000;
 }
 
 [tooltip]:hover::before {
