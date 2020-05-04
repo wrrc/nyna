@@ -5,18 +5,21 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    nav: null,
-    count: 0,
-    from: 0,
-    inWidth: window.innerWidth,
-    backIsShow: false,
-    barShrink: false,
-    isDown: true,
-    modeVisible: false,
-    sonOrNight: '🌞',
-    switchNight: false,
-    alertInfo: [],
-    token: '',
+    nav: null,                    // 导航信息
+    count: 0,                     // 官方示例
+    from: 0,                      // 页面滚动
+    inWidth: window.innerWidth,   // 页面宽度
+    backIsShow: false,            // 回到顶部
+    barShrink: false,             // 顶栏响应式
+    isDown: true,                 // 侧栏
+    // modeVisible: false,
+    sonOrNight: '🌞',             // 夜间模式切换表情
+    switchNight: false,           // 侧栏开启夜间模式
+    alertInfo: [],                // 弹窗信息
+    token: '',                    // 用户 token
+    addTagMode: false,            // 增加标签的模态
+    tags: JSON.parse(sessionStorage.getItem('tags')) || [],                     // 标签
+    classes: JSON.parse(sessionStorage.getItem('classes')) || [], // 标签的分类信息
   },
   mutations: {
     increment(state) {
@@ -70,6 +73,15 @@ export default new Vuex.Store({
     setToken(s, v) {
       s.token = v;
     },
+    setAddTagMode(s) {
+      s.addTagMode = !s.addTagMode;
+    },
+    setTags(s, v) {
+      s.tags = v;
+    },
+    setClasses(s, v) {
+      s.classes = v;
+    }
   },
   actions: {
 

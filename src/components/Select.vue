@@ -1,75 +1,35 @@
 <template>
-  <div class="enter-input" @mouseenter="showList" @mouseleave="hideList">
-    <input type="text" v-model="articleType" class="inputc add-select" placeholder="选择一些标签吧" />
-    <ul class="float-option" :style="{ display: listShow ? 'inline' : 'none' }">
-      <li v-for="(v, index) in category" :key="index" @click="liClick" :data-id="v.id">{{ v.title }}
+  <div class="enter-input" @mouseenter="showList" @mouseleave="showList">
+    <input type="text" v-model="articleType" class="inputc add-select" placeholder="选择一个分类吧" />
+    <ul class="float-option" v-show="listShow">
+      <li v-for="(v, index) in classes" :key="index" @click="liClick" :data-id="v.class_gid">{{ v.class_name }}
       </li>
     </ul>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
   export default {
     name: 'wr-select',
     data() {
       return {
         articleType: '',
-        category: [
-          {
-            id: '123',
-            title: '前端',
-            child: [
-              {
-                id: '456',
-                title: '后端',
-              },
-              {
-                id: '456',
-                title: '后端',
-              },
-              {
-                id: '456',
-                title: '后端',
-              },
-              {
-                id: '456',
-                title: '后端',
-              },
-              {
-                id: '456',
-                title: '后端',
-              },
-            ]
-          },
-          {
-            id: '456',
-            title: '后端',
-          },
-          {
-            id: '789',
-            title: '数据库',
-          },
-          {
-            id: '741',
-            title: '运维',
-          },
-          {
-            id: '852',
-            title: '工具',
-          },
-        ]
+        listShow: false,
+        classId: '',
       }
     },
+    computed: mapState([
+      'classes'
+    ]),
     methods: {
       showList() {
         this.listShow = !this.listShow;
       },
-      hideList() {
-        this.listShow = !this.listShow;
-      },
       liClick(e) {
-        this.from.classid = e.target.getAttribute('data-id');
+        this.classId = e.target.getAttribute('data-id');
         this.articleType = e.target.innerText;
+        this.$emit('pushCalss', this.classId);
       },
     }
   }
@@ -80,7 +40,7 @@
   /* width: 80%; */
   position: absolute;
   top: 30px;
-  left: 10px;
+  left: 30px;
   padding: 6px 12px;
   display: flex;
   flex-direction: row;

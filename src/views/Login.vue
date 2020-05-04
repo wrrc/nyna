@@ -1,67 +1,63 @@
 <template>
-  <div class="mode">
-    <div class="mode-dialog">
-      <div class="mode-header">
-        <button class="btn" ref="withRegist" @click="switchShow">注册</button>
-        <button class="btn" @click="close">✖</button>
-      </div>
-      <form class="mode-content">
-        <p class="h5" v-show="!isRegist" style="text-align: center;">
-          请填写相关信息以进行登录
-        </p>
-        <p class="h5" v-show="isRegist" style="text-align: center;">
-          验证码有效时间只有三分钟...
-        </p>
-        <div class="enter-input" v-show="isRegist">
-          <input type="email" @blur="emailBlur" v-model="froms.email" class="inputc" placeholder="邮箱" />
-          <span></span>
-        </div>
-        <span class="tip">{{ tip.email }}</span>
-
-        <div class="enter-input" v-show="isRegist">
-          <input type="text" @blur="emailCodeBlur" v-model="froms.code" class="inputc" maxlength="6" placeholder="验证码" />
-          <span></span>
-          <button @click.prevent="reqCode" :disabled="disable" :class="{ btn: true, disable: disable}">发送验证码</button>
-        </div>
-        <span class="tip">{{ tip.code }}</span>
-
-        <div class="enter-input">
-          <input type="text" @blur="nickBlur" v-model="froms.nick" class="inputc" placeholder="用户名" />
-          <span></span>
-        </div>
-        <span class="tip">{{ tip.nick }}</span>
-
-        <div class="enter-input">
-          <input type="password" @blur="passBlur" v-model="froms.pass" class="inputc" placeholder="密码" />
-          <span></span>
-        </div>
-        <span class="tip">{{ tip.pass }}</span>
-
-        <div class="enter-input" v-show="isRegist">
-          <input type="password" @blur="passiBlur" v-model="froms.passi" class="inputc" placeholder="重复密码" />
-          <span></span>
-        </div>
-        <span class="tip">{{ tip.passi }}</span>
-
-        <div class="enter-input" v-show="!isRegist">
-          <input type="text" @blur="pngCodeBlur" v-model="froms.verific" class="inputc" maxlength="4" placeholder="验证码" />
-          <span></span>
-          <a href="#" @click="again" tooltip="点击切换" placement="right">
-            <img src="http://127.0.0.1:7001/getCode" alt="重新加载" style="border-radius: 5px;" />
-          </a>
-        </div>
-        <span class="tip">{{ tip.verific }}</span>
-      </form>
-      <div class="mode-footer">
-        <button class="btn" @click="handleLogin">(☞ﾟヮﾟ)👉</button>
-      </div>
+  <wr-mode>
+    <div class="mode-header">
+      <button class="btn" ref="withRegist" @click="switchShow">注册</button>
+      <button class="btn" @click="close">✖</button>
     </div>
-  </div>
+    <form class="mode-content">
+      <p class="h5" v-show="!isRegist" style="text-align: center;">
+        请填写相关信息以进行登录
+      </p>
+      <p class="h5" v-show="isRegist" style="text-align: center;">
+        验证码有效时间只有三分钟...
+      </p>
+      <div class="enter-input" v-show="isRegist">
+        <input type="email" @blur="emailBlur" v-model="froms.email" class="inputc" placeholder="邮箱" />
+        <span></span>
+      </div>
+      <span class="tip">{{ tip.email }}</span>
+
+      <div class="enter-input" v-show="isRegist">
+        <input type="text" @blur="emailCodeBlur" v-model="froms.code" class="inputc" maxlength="6" placeholder="验证码" />
+        <span></span>
+        <button @click.prevent="reqCode" :disabled="disable" :class="{ btn: true, disable: disable}">发送验证码</button>
+      </div>
+      <span class="tip">{{ tip.code }}</span>
+
+      <div class="enter-input">
+        <input type="text" @blur="nickBlur" v-model="froms.nick" class="inputc" placeholder="用户名" />
+        <span></span>
+      </div>
+      <span class="tip">{{ tip.nick }}</span>
+
+      <div class="enter-input">
+        <input type="password" @blur="passBlur" v-model="froms.pass" class="inputc" placeholder="密码" />
+        <span></span>
+      </div>
+      <span class="tip">{{ tip.pass }}</span>
+
+      <div class="enter-input" v-show="isRegist">
+        <input type="password" @blur="passiBlur" v-model="froms.passi" class="inputc" placeholder="重复密码" />
+        <span></span>
+      </div>
+      <span class="tip">{{ tip.passi }}</span>
+
+      <div class="enter-input" v-show="!isRegist">
+        <input type="text" @blur="pngCodeBlur" v-model="froms.verific" class="inputc" maxlength="4" placeholder="验证码" />
+        <span></span>
+        <a href="#" @click="again" tooltip="点击切换" placement="right">
+          <img src="http://127.0.0.1:7001/getCode" alt="重新加载" style="border-radius: 5px;" />
+        </a>
+      </div>
+      <span class="tip">{{ tip.verific }}</span>
+    </form>
+    <div class="mode-footer">
+      <button class="btn" @click="handleLogin">(👉ﾟヮﾟ)👉</button>
+    </div>
+  </wr-mode>
 </template>
 
 <script>
-  // import OutText from '@/components/OutText.vue';
-
   export default {
     name: 'wr-login',
     // components: { OutText },
@@ -241,46 +237,6 @@
 </script>
 
 <style scoped>
-.mode {
-  position: fixed;
-  top: 0;left: 0;right: 0;bottom: 0;
-  z-index: 50;
-  background: rgba(241, 241, 240, .5);
-  transition: background .5s ease-out;
-}
-
-.mode:before {
-  content: " ";
-  position: absolute;
-  filter: blur(5px);
-}
-
-.mode-dialog {
-  position: absolute;
-  top: 0;right: 0;left: 0;bottom: 0;
-  max-width: 500px;
-  height: max-content;
-  padding: 20px;
-  margin: auto;
-  border-radius: var(--br);
-  background:hsla(0, 0%, 100%, .9);
-  /* filter: blur(.03rem); */
-  animation: bc-drop .6s forwards;
-}
-
-.mode-header {
-  display: flex;
-  justify-content: space-between;
-}
-
-.mode-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 2rem 3rem;
-}
-
-
 .tip {
   margin-left: 7%;
   color: rgba(200, 50, 50, .8);
@@ -291,27 +247,5 @@
 .disable {
   cursor: wait;
   animation: '';
-}
-
-.mode-footer {
-  display: flex;
-  justify-content: center;
-}
-
-.mode-footer > .btn {
-  /* border: 0; */
-  /* box-shadow: var(--boxSha); */
-  width: 50%;
-  background: linear-gradient(45deg, #a8edea,#e6e6fa, #fed6e3 );
-  animation: hueRotate 5s infinite alternate;
-}
-
-@keyframes hueRotate {
-  from {
-    filter: hue-rotate(0);
-  }
-  to {
-    filter: hue-rotate(360deg);
-  }
 }
 </style>

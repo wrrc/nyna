@@ -3,7 +3,7 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 
-import Alert from './components/Alert.vue';
+import Mode from './components/Mode.vue';
 
 import axios from './plugins/axios';
 import mavonEditor from 'mavon-editor';
@@ -13,7 +13,7 @@ import './assets/blog-css.css';
 
 Vue.use(mavonEditor);
 Vue.config.productionTip = false;
-Vue.component('wr-alert', Alert);
+Vue.component('wr-mode', Mode);
 
 new Vue({
   router,

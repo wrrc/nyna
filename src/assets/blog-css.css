@@ -29,7 +29,7 @@ body {
   width: 100%;
   overflow-x: hidden;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-size: 1rem;
+  /* font-size: 1rem; */
   font-weight: 400;
   line-height: 1.5;
   background-color: var(--bcl);
@@ -309,6 +309,40 @@ button:active {
   border-right: 5px solid rgba(44, 62, 80, 0.3);
 }
 
+.mode-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mode-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem 3rem;
+}
+
+.mode-footer {
+  display: flex;
+  justify-content: center;
+}
+
+.mode-footer > .btn {
+  /* border: 0; */
+  /* box-shadow: var(--boxSha); */
+  width: 50%;
+  background: linear-gradient(45deg, #a8edea,#e6e6fa, #fed6e3 );
+  animation: hueRotate 5s infinite alternate;
+}
+
+@keyframes hueRotate {
+  from {
+    filter: hue-rotate(0);
+  }
+  to {
+    filter: hue-rotate(360deg);
+  }
+}
+
 .enter-input {
   position: relative;
   display: flex;
@@ -323,7 +357,7 @@ button:active {
 
 .inputc {
   width: 80%;
-  height: 25px;
+  min-height: 25px;
   padding: var(--pad);
   margin: .5rem auto;
   outline: none;

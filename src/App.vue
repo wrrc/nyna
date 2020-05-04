@@ -2,7 +2,7 @@
   <div>
     <DropDown />
     <Nav isPosition="bottom" />
-    <wr-alert></wr-alert>
+    <Alert />
     <!-- <div class="container"> -->
       <transition :name="transitionName">
         <router-view />
@@ -16,6 +16,7 @@
 import DropDown from '@/components/DropDown.vue';
 import BackTop from '@/components/BackTop.vue';
 import Nav from '@/components/Nav.vue';
+import Alert from './components/Alert.vue';
 
 export default {
   name: 'app-root',
@@ -56,6 +57,7 @@ export default {
     BackTop,
     Nav,
     DropDown,
+    Alert,
   },
 }
 </script>

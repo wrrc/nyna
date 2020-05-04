@@ -5,44 +5,73 @@
         <input type="text" v-model="title" class="inputc" placeholder="输入标题" />
         <span></span>
       </div>
+      <div class="enter-input">
+        <textarea type="text" rows="3" v-model="articleDesc" class="inputc" placeholder="梗概" />
+        <span></span>
+      </div>
       <div class="summarys" style="background: var(--bcy);">
         <span class="selected">最多五个标签，让你的文章更清晰</span>
         <span class="selected be-selected" v-for="(v, index) in chosen" :key="index" @click="delThis(index)">{{ v.tag_name }}</span>
       </div>
       <div class="summarys">
-        <button class="selected to-selected">创建</button>
+        <button class="selected to-selected" @click="createTag">创建</button>
         <button class="selected to-selected" v-for="(v, index) in tags" :key="index" @click="addToSelect(index)">{{ v.tag_name }}</button>
       </div>
     </div>
       <mavon-editor class="editor" ref="md" :ishljs="true" :boxShadow="false" @imgAdd="imgAdd" @imgDel="imgDel" @save="save"
-      transition="transition" :toolbarsBackground="'var(--bcy)'" :previewBackground="'#fffafa'" placeholder="开始编辑吧" :autofocus="true" v-model="val" style="height: 600px;max-height: 600px;" />
+      transition="transition" :subfield="false" :toolbarsBackground="'var(--bcy)'" :previewBackground="'#fffafa'" placeholder="开始编辑吧" :autofocus="true" v-model="val" style="height: 600px;max-height: 600px;" />
+      <AddTag v-show="addTagMode" />
   </div>
 </template>
 
 <script>
+  import AddTag from '@/components/AddTag.vue';
+  import { mapState } from 'vuex';
+  import { mapMutations } from 'vuex';
+
   export default {
     name: 'wr-mark',
     data() {
       return {
         val: '',
         title: '',
-        tags: [],
+        articleDesc: '',
         chosen: [],
         transition: true,
       }
     },
+    computed: {
+      ...mapState([
+        'addTagMode',
+        'tags',
+        'classes',
+      ]),
+    },
     created() {
-      this.tags = JSON.parse(sessionStorage.getItem('tags'));
-      if (!this.tags) {
+      if (!this.tags.length) {
         axios
         .get('/tags')
         .then((res) => {
-          this.tags = res;
+          this.setTags(res);
           sessionStorage.setItem('tags', JSON.stringify(res));
+        })
+      }
+      if (!this.classes.length) {
+        axios
+        .get('/classes')
+        .then((res) => {
+          this.setClasses(res);
+          sessionStorage.setItem('classes', JSON.stringify(res));
         })
       }
     },
     methods: {
+      ...mapMutations({
+        createTag: 'setAddTagMode', // 将 `this.createTag()` 映射为 `this.$store.commit('setAddTagMode')`
+        setAlertInfo: 'setAlertInfo',
+        setClasses: 'setClasses',
+        setTags: 'setTags',
+      }),
       addToSelect(i) {
         if (this.chosen.length < 5) {
           const [ item ] = this.tags.splice(i, 1);
@@ -88,19 +117,30 @@
         const tags = this.chosen.map((e) => {
           return e.tag_gid;
         });
-        axios
-          .post('/article',
-            {
-              title: this.title,
-              tags,
-              md
-            },
-          )
-          .then((res) => {
-            console.log(res, 'EEEEE');
-          });
+        if (tags && this.title && this.articleDesc && md) {
+          axios
+            .post('/article',
+              {
+                title: this.title,
+                desc: this.articleDesc,
+                tags,
+                md,
+                html,
+              },
+            )
+            .then((res) => {
+              console.log(res, 'EEEEE');
+            });
+        } else {
+          setAlertInfo({
+            color: 2,
+            msg: '请填写完整信息'
+          })
+        }
+
       }
     },
+    components: { AddTag }
   }
 </script>
 
@@ -121,6 +161,10 @@
   background: var(--bcw);
 }
 
+textarea.inputc {
+  text-indent: 2em;
+}
+
 .summarys {
   display: flex;
   flex-wrap: wrap;
@@ -134,6 +178,7 @@
   padding: 6px 12px;
   margin: .2rem;
   border-radius: var(--br);
+  color: var(--bcb);
   font-weight: 600;
   font-size: x-small;
   cursor: pointer;
