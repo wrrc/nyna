@@ -85,13 +85,6 @@
         isRegist: false,
       }
     },
-    /* created() {
-      const time = window.localStorage.getItem['wait'];
-      console.log(time);
-      if (time >= this.delay) {
-        console.log(time);
-      }
-    }, */
     methods: {
       switchShow() {
         this.isRegist = !this.isRegist;
@@ -112,7 +105,6 @@
             let i = 1000;
             this.timre = setInterval(() => {
               const s = (this.delay-i)/1000;
-              // window.localStorage.setItem['wait'] = `${s}`;
               e.target.innerText = `等待 ${s} 秒`;
               i += 1000;
               if (i >= this.delay) {
@@ -131,12 +123,12 @@
         if (!this.isRegist) {
           const { nick, pass, verific } = this.froms;
           if (nick && pass && verific) {
+            // this.$api.login(nick, pass, verific);
             axios.post('/login', { nick, pass, verific })
             .then((data) => {
-              if (data.code === 105) {
+              if (data.code === 202) {
                 this.$router.push('/');
                 this.$store.commit('setToken', data.dataSet);
-                console.log('logintoken', data.dataSet);
                 sessionStorage.setItem('userToken', data.dataSet);
               }
             })
@@ -155,9 +147,8 @@
             axios.post('/users', { email, code, nick, pass })
             .then((data) => {
               let c;
-              if (data.code === 104) {
+              if (data.code === 201) {
                 this.switchShow();
-
               }
             })
           } else {

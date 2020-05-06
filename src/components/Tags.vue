@@ -21,7 +21,7 @@
 
 <style scoped>
 .content-right {
-  width: max-content;
+  width: 30%;
 }
 .summarys {
   height: max-content;

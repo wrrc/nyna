@@ -114,25 +114,29 @@
         });
       },
       save(md, html) {
-        const tags = this.chosen.map((e) => {
-          return e.tag_gid;
-        });
-        if (tags && this.title && this.articleDesc && md) {
+        // const tags = this.chosen.map((e) => {
+        //   return e.tag_gid;
+        // });
+        if (this.chosen.length && this.title && this.articleDesc && md) {
           axios
             .post('/article',
               {
                 title: this.title,
                 desc: this.articleDesc,
-                tags,
+                tags: this.chosen,
                 md,
                 html,
               },
             )
             .then((res) => {
+              this.val = '';
+              this.title = '';
+              this.articleDesc = '';
+              this.chosen = [];
               console.log(res, 'EEEEE');
             });
         } else {
-          setAlertInfo({
+          this.setAlertInfo({
             color: 2,
             msg: '请填写完整信息'
           })
@@ -154,6 +158,8 @@
   max-width: 20%;
   /* height: 600px; */
   max-height: 600px;
+  overflow: hidden;
+  overflow-y: hidden;
   display: flex;
   align-self: start;
   flex-direction: column;
@@ -175,7 +181,7 @@ textarea.inputc {
 }
 
 .selected {
-  padding: 6px 12px;
+  padding: 5px 10px;
   margin: .2rem;
   border-radius: var(--br);
   color: var(--bcb);
@@ -209,10 +215,10 @@ textarea.inputc {
   }
 }
 
-.to-selected::after {
+/* .to-selected::after {
   content: "➕";
   margin-left: 5px;
-}
+} */
 
 .be-selected {
   color: var(--bcw);

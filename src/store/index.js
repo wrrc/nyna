@@ -12,7 +12,7 @@ export default new Vuex.Store({
     backIsShow: false,            // 回到顶部
     barShrink: false,             // 顶栏响应式
     isDown: true,                 // 侧栏
-    // modeVisible: false,
+    modeVisible: false,
     sonOrNight: '🌞',             // 夜间模式切换表情
     switchNight: false,           // 侧栏开启夜间模式
     alertInfo: [],                // 弹窗信息

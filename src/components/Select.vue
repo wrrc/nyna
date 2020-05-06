@@ -1,5 +1,5 @@
 <template>
-  <div class="enter-input" @mouseenter="showList" @mouseleave="showList">
+  <div class="enter-input" @mouseenter="showList" @mouseleave="hideList">
     <input type="text" v-model="articleType" class="inputc add-select" placeholder="选择一个分类吧" />
     <ul class="float-option" v-show="listShow">
       <li v-for="(v, index) in classes" :key="index" @click="liClick" :data-id="v.class_gid">{{ v.class_name }}
@@ -24,9 +24,13 @@ import { mapState } from 'vuex';
     ]),
     methods: {
       showList() {
-        this.listShow = !this.listShow;
+        this.listShow = true;
+      },
+      hideList() {
+        this.listShow = false;
       },
       liClick(e) {
+        this.listShow = false;
         this.classId = e.target.getAttribute('data-id');
         this.articleType = e.target.innerText;
         this.$emit('pushCalss', this.classId);

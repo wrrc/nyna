@@ -2,8 +2,7 @@
 
 import Vue from 'vue';
 import axios from 'axios';
-import store from '../store';
-import router from '../router';
+import vm from '../main';
 
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
@@ -30,7 +29,7 @@ _axios.interceptors.request.use(
   function(config) {
     // Do something before request is sent
     // 从 vuex 里获取 token
-    const token = store.state.token;
+    const token = vm.$store.state.token;
     // 如果 token 存在就在请求头里添加
     token && (config.headers.Authorization = token);
     return config;
@@ -48,37 +47,43 @@ _axios.interceptors.response.use(
     if (response.data.code) {
       switch (response.data.code) {
         // case 100:
-        case 104:
-        case 105:
-          store.commit('setAlertInfo', {
+        case 201:
+        case 202:
+          vm.$store.commit('setAlertInfo', {
             color: 1,
             msg: response.data.message,
           });
           break;
         case 201:
-        case 101004:
-        case 101009:
-          store.commit('setAlertInfo', {
+        case 2011:
+        case 2012:
+        case 2021:
+        case 2032:
+        case 2052:
+          vm.$store.commit('setAlertInfo', {
             color: 2,
             msg: response.data.message,
           });
         break;
-        case 101002:
-        case 101003:
-        case 101007:
-        case 101010:
-        case 201001:
-          store.commit('setAlertInfo', {
+        case 1013:
+        case 1014:
+        case 2013:
+        case 2022:
+        case 2023:
+        case 2031:
+        case 2043:
+        case 2051:
+          vm.$store.commit('setAlertInfo', {
             color: 3,
             msg: response.data.message,
           });
           break;
-        case 101001:
-          store.commit('setAlertInfo', {
+        case 1012:
+          vm.$store.commit('setAlertInfo', {
             color: 4,
             msg: response.data.message,
           });
-          router.push('/login');
+          vm.$router.push('/login');
           break;
         default: break;
       };

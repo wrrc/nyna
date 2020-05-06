@@ -1,41 +1,28 @@
 <template>
-  <!-- <div>
-    <div class="time-list">
-    <section class="card">
-      <div class="card-header">
-        <h4>假设这里是标题</h4>
-        <label class="time-list-time">
-          <em>2020-03-21</em>
-        </label>
-      </div>
-      <article class="card-body">
-        这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本这是一段文本
-      </article>
-    </section>
-    </div>
-  </div> -->
   <div class="content-left">
     <p class="h5 leading-symbol">全部文章</p>
-    <div class="article-warp">
-      <section class="card">
+    <div class="article-warp" v-if="dataList.length > 0">
+      <!-- <transition-group :name="tranname"> -->
+      <section class="card" v-for="(v, index) in dataList" :key="index">
         <div class="card-header">
-          <p>
-            <cite class="h5 title">关于用 Vue 搭建博客</cite>
-          </p>
-          2020-04-21
+          <a @click.prevent="handleJump(index)">
+            <cite class="h5 title">{{ v.article_title }}</cite>
+          </a>
+          {{ v.article_release_time.replace(/[TZ]|\.|0{3}/g,' ') }}
         </div>
-        <article class="card-body">
-          这个东西不太好弄啊，，，，，气死个人，边做边想，要是有设计稿就好惹 (∪.∪ )...zzz，气死个人，边做边想，要是有设计稿就好惹 (∪.∪ )...zzz
-        </article>
+        <article class="card-body">{{ v.article_description }}</article>
         <div class="card-footer">
+          <div class="tags">
+            <span v-for="(t, index) in v.blog_article_tags" :data-id="t.tag_gid" :key="index">{{ t.tag_name }}</span>
+          </div>
           <div class="flags">
             <button class="btn flag" tooltip="查看详情" placement="bottom">
               🔬
-              <span>5</span>
+              <span>{{ v.article_look }}</span>
             </button>
             <button class="btn flag">
               ❤
-              <span>51</span>
+              <span>{{ v.article_keep }}</span>
             </button>
             <button class="btn flag">
               ✒
@@ -44,33 +31,23 @@
           </div>
         </div>
       </section>
-      <section class="card">
-        <div class="card-header">
-          <p>
-            <cite class="h5 title">关于用 Vue 搭建博客</cite>
-          </p>
-          2020-04-21
-        </div>
-        <article class="card-body">
-          这个东西不太好弄啊，，，，，气死个人，边做边想，要是有设计稿就好惹 (∪.∪ )...zzz，气死个人，边做边想，要是有设计稿就好惹 (∪.∪ )...zzz
-        </article>
-        <div class="card-footer">
-          <div class="flags">
-            <button class="btn flag" tooltip="查看详情" placement="bottom">
-              🔬
-              <span>5</span>
-            </button>
-            <button class="btn flag">
-              ❤
-              <span>51</span>
-            </button>
-            <button class="btn flag">
-              ✒
-              <span>511</span>
-            </button>
-          </div>
-        </div>
-      </section>
+      <!-- </transition-group> -->
+    </div>
+    <div v-else class="article-warp">
+      <p>Sorry, no items found...</p>
+    </div>
+    <div style="display: flex;justify-content: center;">
+      <ul class="pagination">
+        <li class="pagination-list">
+          <a href="#" @click.prevent="toBefore">&laquo;</a>
+        </li>
+        <li :class="{ 'pagination-list': true, 'High-light': v.highlight }" v-for="(v, index) in pageNumber" :key="index">
+          <a href="#" @click.prevent="handleNext(index)">{{ v.pageNumber }}</a>
+        </li>
+        <li class="pagination-list">
+          <a href="#" @click.prevent="toAfter">&raquo;</a>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -78,34 +55,87 @@
 <script>
 export default {
   name: "wr-in-article",
-  // beforeCreate() {
-
-  // },
   data() {
     return {
-      dataList: [
-        // {
-        //   time: string,
-        //   title: strign,
-        //   article: string
-        // }
-      ]
+      dataList: [],
+      sum: 0,
+      pageNumber: [],
+      limit: 5,
     }
-  }
+  },
+  created() {
+    axios
+      .get(`/article?limit=${ this.limit }&offset=0`)
+      .then(({code, dataSet}) => {
+        if (code === 100) {
+          this.dataList = dataSet.rows;
+          console.log('created -> dataSet.rows', dataSet.rows)
+          this.sum = dataSet.count;
+          const pageSum = Math.ceil(this.sum/5);
+          for (let i = 1; i <= pageSum; i++) {
+            this.pageNumber.push({
+              pageNumber: i,
+              highlight: i === 1 ? true : false,
+            });
+          }
+        }
+      })
+  },
+  methods: {
+    handleNext(i) {
+      this.pageNumber.forEach((v, index) => {
+        if (i === index) {
+          v.highlight = true;
+        } else {
+          v.highlight = false;
+        }
+      });
+      axios
+        .get(`/article?limit=${ this.limit }&offset=${ this.limit * i }`)
+        .then(({code, dataSet}) => {
+          if (code === 100) {
+            this.dataList = dataSet.rows;
+          }
+        });
+    },
+    toBefore() {
+      this.pageNumber.forEach((v, i) => {
+        if (v.highlight) {
+          if (i >= 1) {
+            --i;
+            this.handleNext(i);
+          }
+        }
+      });
+    },
+    toAfter() {
+      const v = this.pageNumber.filter(v => {
+        if (v.highlight) {
+          return v;
+        }
+      })
+      if (v[0].pageNumber < this.pageNumber.length) {
+        this.handleNext(v[0].pageNumber);
+      }
+    },
+    handleJump(i) {
+      // axios.get
+    }
+  },
 };
 </script>
 
 <style scoped>
 .content-left {
-  /* width: 80%; */
+  width: inherit;
   margin-right: 30px;
   margin-bottom: 30px;
 }
 
 .article-warp {
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  flex-direction: column;
+  justify-content: center;
   flex-wrap: wrap;
 }
 
@@ -163,6 +193,33 @@ export default {
   border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
 }
 
+.card-header a {
+  position: relative;
+  cursor: pointer;
+}
+
+.card-header a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background-color: var(--bcb);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.3s ease-out;
+}
+
+.card-header a:hover {
+  color: #42b983;
+}
+
+.card-header a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
 .card-body {
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
@@ -172,9 +229,66 @@ export default {
 
 .card-footer {
   display: flex;
-  justify-content: flex-end;
-  margin-right: 1rem;
-  margin-bottom: 1rem;
+  justify-content: space-between;
+  margin: 1rem;
+}
+
+.tags span {
+  padding: 0 5px;
+  color: var(--bcw);
+  background: #acacac;
+  border-radius: var(--br);
+}
+
+.pagination {
+  width: max-content;
+  padding: 0;
+  height: 38px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+}
+
+.pagination-list {
+  padding: 6px;
+  font-size: 80%;
+  border: 1px solid #EFEFEF;
+  color: var(--bcb);
+  background: var(--bcw);
+  transition: all .3s ease;
+}
+
+.pagination-list > a {
+  padding: 6px;
+  color: inherit;
+}
+
+.High-light {
+  font-size: 100%;
+  color: var(--bcw);
+  background: var(--bcb);
+}
+
+.pagination-list:active {
+  -webkit-transform: scale(0.9);
+  -moz-transform: scale(0.9);
+  -ms-transform: scale(0.9);
+  -o-transform: scale(0.9);
+  transform: scale(.9);
+}
+
+.pagination-list:first-child {
+  border-top-left-radius: var(--br);
+  border-bottom-left-radius: var(--br);
+}
+
+.pagination-list:last-child {
+  border-top-right-radius: var(--br);
+  border-bottom-right-radius: var(--br);
+}
+
+.flag {
+  border: 0;
 }
 
 /* inArticle */
@@ -231,42 +345,5 @@ export default {
 .time-list-time {
   /* margin-bottom: 50px; */
   color: var(--bcb);
-}
-
-.card {
-  position: relative;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  min-width: 0;
-  word-wrap: break-word;
-  background-color: var(--bcw);
-  background-clip: border-box;
-  border: 1px solid rgba(44, 62, 80, 0.125);
-  border-radius: 5px;
-  transition: all 0.3s ease;
-}
-
-.card-header {
-  padding: 0.75rem 1.25rem;
-  margin: 0;
-  background-color: rgba(44, 62, 80, 0.03);
-  border-bottom: 1px solid rgba(44, 62, 80, 0.125);
-  white-space: pre;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: center;
-}
-
-.card-header:first-child {
-  border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
-}
-
-.card-body {
-  -ms-flex: 1 1 auto;
-  flex: 1 1 auto;
-  padding: 1.25rem;
-  text-indent: 2em;
 }
 </style>
