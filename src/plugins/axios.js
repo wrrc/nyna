@@ -59,7 +59,6 @@ _axios.interceptors.response.use(
         case 2012:
         case 2021:
         case 2032:
-        case 2052:
           vm.$store.commit('setAlertInfo', {
             color: 2,
             msg: response.data.message,
@@ -84,6 +83,9 @@ _axios.interceptors.response.use(
             msg: response.data.message,
           });
           vm.$router.push('/login');
+          break;
+        case 2052:
+          vm.$router.push('*');
           break;
         default: break;
       };

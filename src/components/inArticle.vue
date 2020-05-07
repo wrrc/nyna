@@ -12,19 +12,19 @@
         </div>
         <article class="card-body">{{ v.article_description }}</article>
         <div class="card-footer">
-          <div class="tags">
-            <span v-for="(t, index) in v.blog_article_tags" :data-id="t.tag_gid" :key="index">{{ t.tag_name }}</span>
+          <div class="flags">
+            <span class="flag" v-for="(t, index) in v.blog_article_tags" :data-id="t.tag_gid" :key="index">{{ t.tag_name }}</span>
           </div>
           <div class="flags">
-            <button class="btn flag" tooltip="查看详情" placement="bottom">
+            <button class="flag"> <!--  tooltip="查看详情" placement="bottom" -->
               🔬
               <span>{{ v.article_look }}</span>
             </button>
-            <button class="btn flag">
+            <button class="flag">
               ❤
               <span>{{ v.article_keep }}</span>
             </button>
-            <button class="btn flag">
+            <button class="flag">
               ✒
               <span>511</span>
             </button>
@@ -69,7 +69,6 @@ export default {
       .then(({code, dataSet}) => {
         if (code === 100) {
           this.dataList = dataSet.rows;
-          console.log('created -> dataSet.rows', dataSet.rows)
           this.sum = dataSet.count;
           const pageSum = Math.ceil(this.sum/5);
           for (let i = 1; i <= pageSum; i++) {
@@ -119,7 +118,8 @@ export default {
       }
     },
     handleJump(i) {
-      // axios.get
+      const id = this.dataList[i].article_gid;
+      this.$router.push({ name: 'Article', params: { id } });
     }
   },
 };
@@ -164,11 +164,11 @@ export default {
 }
 
 .card:hover {
-  animation: enlarge 1s forwards;
-    -moz-animation: enlarge 1s forwards;
-    -o-animation: enlarge 1s forwards;
-    -webkit-animation: enlarge 1s forwards;
-  z-index: 5;
+  animation: enlarge .5s forwards;
+    -moz-animation: enlarge .5s forwards;
+    -o-animation: enlarge .5s forwards;
+    -webkit-animation: enlarge .5s forwards;
+  /* z-index: 5; */
 }
 
 @keyframes enlarge {
@@ -233,12 +233,29 @@ export default {
   margin: 1rem;
 }
 
-.tags span {
-  padding: 0 5px;
-  color: var(--bcw);
-  background: #acacac;
-  border-radius: var(--br);
+.flag {
+  padding: 4px 12px;
+  font-size: x-small;
+  color: lightseagreen;
+  background: #EFEFEF;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
 }
+
+.flag:first-child {
+  border-top-left-radius: var(--br);
+  border-bottom-left-radius: var(--br);
+}
+
+.flag:last-child {
+  border-top-right-radius: var(--br);
+  border-bottom-right-radius: var(--br);
+}
+
+/* .flag:last-child:hover {
+  animation: shake 0.8s cubic-bezier(.36, .07, .19, .97) both;
+} */
 
 .pagination {
   width: max-content;
@@ -285,10 +302,6 @@ export default {
 .pagination-list:last-child {
   border-top-right-radius: var(--br);
   border-bottom-right-radius: var(--br);
-}
-
-.flag {
-  border: 0;
 }
 
 /* inArticle */

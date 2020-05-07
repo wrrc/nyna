@@ -1,6 +1,6 @@
 <template>
-  <div style="display: flex;flex-direction: column;justify-content: center;">
-    <p class="h3"><label style="font-size: small;margin-right: 10px;">我可能...</label><b>飞不到了</b></p>
+  <div class="box">
+    <p class="h3"><label style="font-size: small;margin-right: 10px;">糟糕 ...</label><b>找不到了</b></p>
     <div class="animation">
         <a href="#" title="点击了解更多">
             <div class="spaceship">

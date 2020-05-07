@@ -133,7 +133,6 @@
               this.title = '';
               this.articleDesc = '';
               this.chosen = [];
-              console.log(res, 'EEEEE');
             });
         } else {
           this.setAlertInfo({

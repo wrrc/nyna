@@ -30,6 +30,10 @@
   padding: 6px 12px;
   border-radius: var(--br);
   background-color: var(--bcw);
+  transition: box-shadow .5s ease;
+}
+
+.summarys:hover {
   box-shadow: var(--boxSha);
 }
 
