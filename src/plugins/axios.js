@@ -57,7 +57,6 @@ _axios.interceptors.response.use(
         case 201:
         case 2011:
         case 2012:
-        case 2021:
         case 2032:
           vm.$store.commit('setAlertInfo', {
             color: 2,
@@ -65,6 +64,7 @@ _axios.interceptors.response.use(
           });
         break;
         case 1013:
+        case 1011:
         case 1014:
         case 2013:
         case 2022:
@@ -78,6 +78,7 @@ _axios.interceptors.response.use(
           });
           break;
         case 1012:
+        case 2021:
           vm.$store.commit('setAlertInfo', {
             color: 4,
             msg: response.data.message,

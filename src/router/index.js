@@ -7,17 +7,39 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/regist',
+    name: 'Regist',
+    component: () => import('../views/Registered.vue'),
+    children: [
+      {
+        path: '/regist/',
+        name: 'SendCode',
+        component: () => import('../components/SendCode.vue')
+      },
+      {
+        path: '/regist/fill',
+        name: 'FillInfo',
+        component: () => import('../components/FillInfo.vue'),
+        beforeEnter: (to, from, next) => {
+          console.log(from);
+          if (from.path !== '/regist') {
+            next({ name: 'NotFind' });
+          } else {
+            next();
+          }
+        }
+      }
+    ]
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('../views/Login.vue')
+  },
+  {
     path: '/',
     name: 'Home',
     component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
     path: '/type',
@@ -30,14 +52,12 @@ const routes = [
     component: () => import('../views/FriendsLink.vue')
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: () => import('../views/Login.vue')
-  },
-  {
-    path: '/article',
-    name: 'Article',
-    component: () => import('../views/OutArticle.vue')
+    path: '/about',
+    name: 'About',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
     path: '/write',
@@ -55,6 +75,11 @@ const routes = [
         next({ path: '/login' });
       }
     }
+  },
+  {
+    path: '/article',
+    name: 'Article',
+    component: () => import('../views/OutArticle.vue')
   },
   {
     path: '*',

@@ -60,7 +60,6 @@
 <script>
   export default {
     name: 'wr-login',
-    // components: { OutText },
     data() {
       return {
         froms: {
@@ -87,36 +86,44 @@
     },
     methods: {
       switchShow() {
-        this.isRegist = !this.isRegist;
-        this.$refs.withRegist.innerText = this.$refs.withRegist.innerText === '登录' ? '注册' : '登录';
+        this.$router.push('/regist');
+        // this.isRegist = !this.isRegist;
+        // this.$refs.withRegist.innerText = this.$refs.withRegist.innerText === '登录' ? '注册' : '登录';
       },
       close() {
         this.$router.go(-1);
       },
       reqCode(e) {
-        axios
-        .post(
-          '/getEmailCode',
-          { email: this.froms.email }
-        )
-        .then((data) => {
-          if (data.code === 100) {
-            this.disable = true;
-            let i = 1000;
-            this.timre = setInterval(() => {
-              const s = (this.delay-i)/1000;
-              e.target.innerText = `等待 ${s} 秒`;
-              i += 1000;
-              if (i >= this.delay) {
-                clearInterval(this.timer);
-                this.disable = false;
-                e.target.innerText = '发送验证码';
+        if (this.froms.email) {
+          axios
+            .post(
+              '/getEmailCode',
+              { email: this.froms.email }
+            )
+            .then((data) => {
+              if (data.code === 100) {
+                this.disable = true;
+                let i = 1000;
+                this.timre = setInterval(() => {
+                  const s = (this.delay-i)/1000;
+                  e.target.innerText = `等待 ${s} 秒`;
+                  i += 1000;
+                  if (i >= this.delay) {
+                    clearInterval(this.timer);
+                    this.disable = false;
+                    e.target.innerText = '发送验证码';
+                  }
+                }, 1000);
               }
-            }, 1000);
-          } else {
-            alert('发送错误!');
-          }
-        })
+            })
+        } else {
+          this.$store.commit(
+              'setAlertInfo',
+              {
+                color: 2,
+                msg: '邮箱格式不正确。',
+            });
+        }
       },
       handleLogin() {
         // 登录
@@ -137,7 +144,7 @@
               'setAlertInfo',
               {
                 color: 2,
-                msg: '请填写完整信息'
+                msg: '请填写完整信息',
             });
           }
         } else {
@@ -159,7 +166,6 @@
                 msg: '请填写完整信息'
             });
           }
-
         }
       },
       pngCodeBlur() {
@@ -228,13 +234,6 @@
 </script>
 
 <style scoped>
-.tip {
-  margin-left: 7%;
-  color: rgba(200, 50, 50, .8);
-  font-size: x-small;
-  animation: in-top 1s forwards;
-}
-
 .disable {
   cursor: wait;
   animation: '';

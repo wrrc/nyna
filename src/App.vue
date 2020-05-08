@@ -34,8 +34,19 @@ export default {
   },
   watch: {
     '$route' (to, from) {
-      let routes = this.navSet;
-      routes.unshift('/');
+      const arr = (a) => {
+        let is = [];
+        a.forEach(v => {
+          if (v.path) {
+            is.push(v.path);
+            if (v.children) {
+              is.push(...arr(v.children));
+            }
+          }
+        });
+        return Array.from(new Set(is));
+      }
+      const routes = arr(this.$router.options.routes);
       const toDepth = routes.indexOf(to.path);
       const fromDepth = routes.indexOf(from.path);
       this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left';
@@ -45,13 +56,6 @@ export default {
     return {
       transitionName: 'slide-left',
     }
-  },
-  computed: {
-    navSet() {
-      return this.$store.state.nav.map(v => {
-        return v.nav_path
-      });
-    },
   },
   components: {
     BackTop,

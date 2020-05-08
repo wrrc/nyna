@@ -34,6 +34,7 @@
   top: 0;right: 0;left: 0;bottom: 0;
   max-width: 500px;
   height: max-content;
+  max-height: 60%;
   padding: 20px;
   margin: auto;
   border-radius: var(--br);

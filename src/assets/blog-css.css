@@ -509,7 +509,12 @@ button:active {
 /* alert 弹窗过渡 */
 .alert-top-enter-active,
 .alert-top-leave-active {
-  /* width: 35%; */
+  width: max-content;
+  position: fixed;
+  left: 0;right: 0;
+  display: flex;
+  flex-flow: column nowrap;
+  z-index: 3100;
   will-change: transform opacity;
 }
 
@@ -528,19 +533,26 @@ button:active {
   }
   to {
     transform: translateY(0);
-    opacity: .9;
+    opacity: 1;
   }
 }
 
 @keyframes out-top {
   from {
     transform: translateY(0);
-    opacity: .9;
+    opacity: 1;
   }
   to {
     transform: translateY(-160%);
     opacity: 0;
   }
+}
+
+.tip {
+  margin-left: 7%;
+  color: rgba(200, 50, 50, .8);
+  font-size: x-small;
+  animation: in-top 1s forwards;
 }
 
 /* tooltip样式 */

@@ -65,7 +65,7 @@ export default {
   },
   created() {
     axios
-      .get(`/article?limit=${ this.limit }&offset=0`)
+      .get(`/getArticleList?limit=${ this.limit }&offset=0`)
       .then(({code, dataSet}) => {
         if (code === 100) {
           this.dataList = dataSet.rows;
@@ -90,7 +90,7 @@ export default {
         }
       });
       axios
-        .get(`/article?limit=${ this.limit }&offset=${ this.limit * i }`)
+        .get(`/getArticleList?limit=${ this.limit }&offset=${ this.limit * i }`)
         .then(({code, dataSet}) => {
           if (code === 100) {
             this.dataList = dataSet.rows;

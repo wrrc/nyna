@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    nav: null,                    // 导航信息
+    nav: [],                    // 导航信息
     count: 0,                     // 官方示例
     from: 0,                      // 页面滚动
     inWidth: window.innerWidth,   // 页面宽度
@@ -64,11 +64,18 @@ export default new Vuex.Store({
       }
     },
     setAlertInfo(s, v) {
-      s.alertInfo.shift();
-      s.alertInfo.push(v);
-      setTimeout(() => {
+      if (s.alertInfo.length <= 3) {
+        s.alertInfo.push(v);
+        let timer = setTimeout(() => {
+          s.alertInfo.shift();
+        }, 3000);
+        if (s.alertInfo.length === 0) {
+          clearTimeout(timer);
+        }
+      } else {
         s.alertInfo.shift();
-      }, 3000);
+        this.setAlertInfo(s, v);
+      }
     },
     setToken(s, v) {
       s.token = v;

@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <h3>{{ a.article_title }}</h3>
+    <h4>{{ a.article_title }}</h4>
     <!-- <hr style="width: 60%;" /> -->
     <mavon-editor
       class="md"
@@ -39,7 +39,7 @@
     },
     beforeCreate() {
       axios
-        .get('/article/' + this.$route.params.id)
+        .get('/getArticleContent/' + this.$route.params.id)
         .then(({ dataSet }) => {
           this.a = dataSet;
         })
