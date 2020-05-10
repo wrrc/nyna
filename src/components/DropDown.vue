@@ -2,7 +2,7 @@
   <div :class="{ mode: modeVisible }">
     <div class="drop_from" :class="{showDown: hei}">
       <span @click="handleClosk" class="close">✖</span>
-      <img src="../assets/img/tou.png" alt="头像" width="200px" />
+      <img :src="`http://127.0.0.1:7001/${userCard.user_avatar}`" alt="此处应该是头像" style="height: 20vh;border-radius: 50%;margin-top: 15px;" />
       <div class="drop_item">
         <router-link v-for="(item, index) in navSet" :key="index" :to="item.nav_path">{{item.nav_name}}</router-link>
         <a href="">分享</a>
@@ -44,7 +44,8 @@
       navSet: 'nav',
       hei: 'isDown',
       modeVisible: 'modeVisible',
-      switchNight: 'switchNight'
+      switchNight: 'switchNight',
+      userCard: 'userCard',
     })
   }
 </script>
@@ -85,12 +86,19 @@
 }
 
 .drop_item a {
+  width: 85%;
+  padding: 6px 12px;
   color: #fff;
 }
 
-.drop_item a {
-  width: 85%;
-  padding: 6px 12px;
+.drop_item a:hover {
+  animation: a-tran .3s ease forwards;
+}
+
+@keyframes a-tran {
+  to {
+    transform: translateX(5%);
+  }
 }
 
 .close {
@@ -111,6 +119,7 @@
   cursor: pointer;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
           box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+  transition: background .5s ease;
 }
 
 .swich-btn::after {
@@ -152,7 +161,7 @@
 }
 
 .switch-btn-on {
-  background-color: rgb(220, 10, 200);
+  background-color: rgb(255, 227, 108);
 }
 
 .switch-btn-on:after {

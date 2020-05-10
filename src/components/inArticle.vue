@@ -3,33 +3,43 @@
     <p class="h5 leading-symbol">全部文章</p>
     <div class="article-warp" v-if="dataList.length > 0">
       <!-- <transition-group :name="tranname"> -->
-      <section class="card" v-for="(v, index) in dataList" :key="index">
-        <div class="card-header">
-          <a @click.prevent="handleJump(index)">
-            <cite class="h5 title">{{ v.article_title }}</cite>
-          </a>
-          {{ v.article_release_time.replace(/[TZ]|\.|0{3}/g,' ') }}
-        </div>
-        <article class="card-body">{{ v.article_description }}</article>
-        <div class="card-footer">
-          <div class="flags">
-            <span class="flag" v-for="(t, index) in v.blog_article_tags" :data-id="t.tag_gid" :key="index">{{ t.tag_name }}</span>
+      <section class="show-article" v-for="(v, index) in dataList" :key="index">
+        <div class="article-info">
+          <img style="height: 7vh;width: 7vh;border-radius: var(--br);" :src="'http://127.0.0.1:7001/' + v.blog_user.user_avatar" alt="此处应有头像">
+          <div class="info-back">
+            <span style="font-size: 12px;text-align: left;">{{ v.article_release_time[0] }}</span>
+            <span style="width: 50%;border-top: 1px solid #666;font-weight: bold;text-align: center;">{{ v.article_release_time[1] }}</span>
           </div>
-          <div class="flags">
-            <button class="flag"> <!--  tooltip="查看详情" placement="bottom" -->
-              🔬
-              <span>{{ v.article_look }}</span>
-            </button>
-            <button class="flag">
-              ❤
-              <span>{{ v.article_keep }}</span>
-            </button>
-            <button class="flag">
-              ✒
-              <span>511</span>
-            </button>
+          <!-- <span>{{ v.blog_user.user_name }}</span> -->
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a @click.prevent="handleJump(index)">
+              <cite class="h4 title">{{ v.article_title }}</cite>
+            </a>
+          </div>
+          <article class="card-body">{{ v.article_description }}</article>
+          <div class="card-footer">
+            <div class="flags">
+              <span class="flag" v-for="(t, index) in v.blog_article_tags" :data-id="t.tag_gid" :key="index">{{ t.tag_name }}</span>
+            </div>
+            <div class="flags">
+              <button class="flag">
+                🔬
+                <span>{{ v.article_look || '没人看哦' }}</span>
+              </button>
+              <button class="flag">
+                ❤
+                <span>{{ v.article_like }}</span>
+              </button>
+              <button class="flag">
+                ✒
+                <span>{{ v.article_keep }}</span>
+              </button>
+            </div>
           </div>
         </div>
+
       </section>
       <!-- </transition-group> -->
     </div>
@@ -61,6 +71,8 @@ export default {
       sum: 0,
       pageNumber: [],
       limit: 5,
+      months: [ 'Januari', 'Februari', 'Machi', 'Aprili', 'Mei', 'Juni', 'Julai', 'Agosti', 'Septemba', 'Oktoba', 'Novemba', 'Desemba' ],
+      monthsShort: [ 'Jan', 'Feb', 'Mac', 'Apr', 'Mei', 'Jun', 'Jul', 'Ago', 'Sep', 'Okt', 'Nov', 'Des' ],
     }
   },
   created() {
@@ -68,7 +80,7 @@ export default {
       .get(`/getArticleList?limit=${ this.limit }&offset=0`)
       .then(({code, dataSet}) => {
         if (code === 100) {
-          this.dataList = dataSet.rows;
+          this.dataList = this.formatDate(dataSet.rows);
           this.sum = dataSet.count;
           const pageSum = Math.ceil(this.sum/5);
           for (let i = 1; i <= pageSum; i++) {
@@ -81,6 +93,15 @@ export default {
       })
   },
   methods: {
+    // 时间格式化
+    formatDate(obj) {
+      obj.forEach(v => {
+        const [ year, month, day ] = v.article_release_time.split(/-|T/);
+        v.article_release_time = [ this.months[+month], day ];
+      });
+      return obj;
+    },
+    // 点击页码跳转
     handleNext(i) {
       this.pageNumber.forEach((v, index) => {
         if (i === index) {
@@ -93,10 +114,12 @@ export default {
         .get(`/getArticleList?limit=${ this.limit }&offset=${ this.limit * i }`)
         .then(({code, dataSet}) => {
           if (code === 100) {
-            this.dataList = dataSet.rows;
+            this.dataList = this.formatDate(dataSet.rows);
           }
         });
     },
+
+    // 上一页
     toBefore() {
       this.pageNumber.forEach((v, i) => {
         if (v.highlight) {
@@ -107,6 +130,8 @@ export default {
         }
       });
     },
+
+    // 下一页
     toAfter() {
       const v = this.pageNumber.filter(v => {
         if (v.highlight) {
@@ -117,15 +142,21 @@ export default {
         this.handleNext(v[0].pageNumber);
       }
     },
+
+    // 页面跳转传值
     handleJump(i) {
       const id = this.dataList[i].article_gid;
       this.$router.push({ name: 'Article', params: { id } });
-    }
+    },
   },
 };
 </script>
 
 <style scoped>
+cite {
+  font-style: normal;
+}
+
 .content-left {
   width: inherit;
   margin-right: 30px;
@@ -137,6 +168,26 @@ export default {
   flex-direction: column;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+.show-article {
+  display: flex;
+  /* flex-grow: 1; */
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.article-info {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  padding: 6px 12px;
+}
+
+.info-back {
+  display: flex;
+  flex-flow: column nowrap;
+  padding: 8px 0;
 }
 
 .title {
@@ -152,6 +203,7 @@ export default {
   display: flex;
   -ms-flex-direction: column;
   flex-direction: column;
+  flex-grow: 1;
   min-width: 0;
   margin-bottom: .5rem;
   word-wrap: break-word;
@@ -168,15 +220,14 @@ export default {
     -moz-animation: enlarge .5s forwards;
     -o-animation: enlarge .5s forwards;
     -webkit-animation: enlarge .5s forwards;
-  /* z-index: 5; */
 }
 
 @keyframes enlarge {
   from {
-    transform: scale(100%, 100%);
+    transform: translateY(0);
   }
   to {
-    transform: scale(110%, 110%);
+    transform: translateY(-3%);
     box-shadow: var(--boxSha);
   }
 }
@@ -237,10 +288,10 @@ export default {
   padding: 4px 12px;
   font-size: x-small;
   color: lightseagreen;
-  background: #EFEFEF;
+  /* background: #EFEFEF; */
   border: 0;
   border-radius: 0;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .flag:first-child {
@@ -273,6 +324,11 @@ export default {
   color: var(--bcb);
   background: var(--bcw);
   transition: all .3s ease;
+}
+
+.pagination-list:hover {
+  color: var(--bcw);
+  background: var(--bcb);
 }
 
 .pagination-list > a {

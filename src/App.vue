@@ -2,7 +2,7 @@
   <div>
     <DropDown />
     <Nav isPosition="bottom" />
-    <Alert />
+    <Alert style="position: fixed;left: 0;right: 0;" />
     <!-- <div class="container"> -->
       <transition :name="transitionName">
         <router-view />
@@ -31,6 +31,10 @@ export default {
     this.$store.commit('isInnerW');
     const token = sessionStorage.getItem('userToken');
     this.$store.commit('setToken', token);
+    const now = new Date().getHours();
+    if (now > 19) {
+      this.$store.commit('setNight');
+    }
   },
   watch: {
     '$route' (to, from) {

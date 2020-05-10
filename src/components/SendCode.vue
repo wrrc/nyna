@@ -8,17 +8,16 @@
         验证码有效时间只有三分钟...
       </p>
       <div class="enter-input">
-        <input type="email" @blur="emailBlur" v-model="froms.email" class="inputc" placeholder="邮箱" />
+        <input type="email" pattern="/^([A-Za-z0-9_\-\.\u4e00-\u9fa5])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,8})$/" @blur="emailBlur" v-model.trim="froms.email" class="inputc" placeholder="邮箱" />
         <span></span>
       </div>
       <span class="tip">{{ tip.email }}</span>
 
       <div class="enter-input">
-        <input type="text" v-model="code" class="inputc" maxlength="6" placeholder="验证码" />
+        <input type="text" v-model.trim="code" class="inputc" maxlength="6" placeholder="验证码" />
         <span></span>
-        <button @click.prevent="reqCode" :disabled="disable" :class="{ btn: true, disable: disable}">发送验证码</button>
+        <button @click.prevent="reqCode" :disabled="disable" :class="{ 'btn': true, 'btn-await': disable}">发送验证码</button>
       </div>
-      <!-- <span class="tip">{{ tip.code }}</span> -->
     </form>
   </div>
 </template>
@@ -35,7 +34,6 @@
         },
         tip: {
           email: '',
-          // code: '',
         },
         code: '',
       }
@@ -96,13 +94,6 @@
             });
         }
       },
-      // emailCodeBlur() {
-      //   let txt = '';
-      //   if (this.froms.code === '') {
-      //     txt = '* 此为必填项';
-      //   }
-      //   this.tip.code = txt;
-      // },
       emailBlur() {
         let txt = '';
         if (this.froms.email === '') {
@@ -117,7 +108,7 @@
 </script>
 
 <style scoped>
-.disable {
+.btn-await {
   cursor: wait;
   animation: '';
 }

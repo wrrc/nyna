@@ -23,8 +23,8 @@
 .alerts {
   position: fixed;
   left: 0;right: 0;
-  display: flex;
-  flex-flow: column nowrap;
+  /* display: flex;
+  flex-flow: column nowrap; */
 }
 
 .alert {

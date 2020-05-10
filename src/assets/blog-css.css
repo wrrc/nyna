@@ -10,7 +10,7 @@
   --bcb: #2C3E50;
   --pad: 6px 12px;
   --transit: all .3s cubic-bezier(0.1, 0, 0.8, 1);
-  --boxSha: 0 20px 40px -15px rgba(0, 0, 0, .2)
+  --boxSha: 0 20px 40px -15px rgba(0, 0, 0, .2);
   /* 0 10px 20px -5px rgba(44, 62, 80, 0.5); */
 }
 
@@ -198,6 +198,12 @@ button:active {
   .container {
     max-width: 540px;
   }
+  /* .article-warp {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: wrap;
+  } */
 }
 
 @media (min-width: 768px) {
@@ -207,6 +213,12 @@ button:active {
   .search {
     width: 165px;
   }
+  /* .article-warp {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: wrap;
+  } */
 }
 
 @media (min-width: 992px) {
@@ -216,6 +228,12 @@ button:active {
   .search {
     width: 180px;
   }
+  /* .article-warp {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  } */
 }
 
 @media (min-width: 1200px) {
@@ -225,6 +243,12 @@ button:active {
   .search {
     width: 240px;
   }
+  /* .article-warp {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  } */
 }
 
 .box {
@@ -512,8 +536,8 @@ button:active {
   width: max-content;
   position: fixed;
   left: 0;right: 0;
-  display: flex;
-  flex-flow: column nowrap;
+  /* display: flex;
+  flex-flow: column nowrap; */
   z-index: 3100;
   will-change: transform opacity;
 }

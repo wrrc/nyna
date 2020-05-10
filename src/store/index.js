@@ -5,21 +5,23 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    nav: [],                    // 导航信息
+    nav: [],                      // 导航信息
     count: 0,                     // 官方示例
     from: 0,                      // 页面滚动
     inWidth: window.innerWidth,   // 页面宽度
     backIsShow: false,            // 回到顶部
     barShrink: false,             // 顶栏响应式
     isDown: true,                 // 侧栏
-    modeVisible: false,
+    modeVisible: false,           // 模态遮罩
     sonOrNight: '🌞',             // 夜间模式切换表情
     switchNight: false,           // 侧栏开启夜间模式
     alertInfo: [],                // 弹窗信息
     token: '',                    // 用户 token
     addTagMode: false,            // 增加标签的模态
-    tags: JSON.parse(sessionStorage.getItem('tags')) || [],                     // 标签
-    classes: JSON.parse(sessionStorage.getItem('classes')) || [], // 标签的分类信息
+    tags: JSON.parse(sessionStorage.getItem('tags')) || [],         // 标签
+    classes: JSON.parse(sessionStorage.getItem('classes')) || [],   // 标签的分类信息
+    userCard: JSON.parse(sessionStorage.getItem('userCard')) || {}, // 用户信息
+    showUserAva: sessionStorage.getItem('userCard') || false,           // 是否展示用户头像
   },
   mutations: {
     increment(state) {
@@ -37,6 +39,8 @@ export default new Vuex.Store({
       s.backIsShow = s.from > 100 ? true : false;
     },
     isInnerW(s) {
+      s.isDown = true;
+      s.modeVisible = false;
       s.inWidth = window.innerWidth;
       s.barShrink = s.inWidth >= 670 ? true : false;
     },
@@ -64,7 +68,7 @@ export default new Vuex.Store({
       }
     },
     setAlertInfo(s, v) {
-      if (s.alertInfo.length <= 3) {
+      if (s.alertInfo.length < 3) {
         s.alertInfo.push(v);
         let timer = setTimeout(() => {
           s.alertInfo.shift();
@@ -88,6 +92,10 @@ export default new Vuex.Store({
     },
     setClasses(s, v) {
       s.classes = v;
+    },
+    setUserCard(s, v) {
+      s.userCard = v;
+      s.showUserAva = !s.showUserAva;
     }
   },
   actions: {
