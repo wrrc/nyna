@@ -9,7 +9,7 @@
   --bcy: #f9f9f9;
   --bcb: #2C3E50;
   --pad: 6px 12px;
-  --transit: all .3s cubic-bezier(0.1, 0, 0.8, 1);
+  --transit: all .3s cubic-bezier(0.6, 0.06, 0.58, 1);
   --boxSha: 0 20px 40px -15px rgba(0, 0, 0, .2);
   /* 0 10px 20px -5px rgba(44, 62, 80, 0.5); */
 }
@@ -33,7 +33,7 @@ body {
   font-weight: 400;
   line-height: 1.5;
   background-color: var(--bcl);
-  transition: color 1s ease,
+  transition: color 1s ease-in-out,
               background-color .5s ease;
 }
 
@@ -59,6 +59,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 a {
+  color: var(--bcb);
   text-decoration: none;
 }
 
@@ -102,6 +103,16 @@ h5, .h5 {
 
 h6, .h6 {
   font-size: 1rem;
+}
+
+mark {
+  border-radius: var(--br);
+  background-color: greenyellow;
+}
+
+.no-scroll {
+  overflow: hidden;
+  height: 100%;
 }
 
 /* button {
@@ -387,7 +398,7 @@ button:active {
   outline: none;
   border: none;
   font-size: .9rem;
-  color: var(--bcb);
+  /* color: var(--bcb); */
   border-radius: var(--br);
   background: #e6ebe6;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);

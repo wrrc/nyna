@@ -2,7 +2,7 @@
   <div :class="{ mode: modeVisible }">
     <div class="drop_from" :class="{showDown: hei}">
       <span @click="handleClosk" class="close">✖</span>
-      <img :src="`http://127.0.0.1:7001/${userCard.user_avatar}`" alt="此处应该是头像" style="height: 20vh;border-radius: 50%;margin-top: 15px;" />
+      <img v-show="userCard.user_avatar" :src="`http://127.0.0.1:7001/${userCard.user_avatar}`" alt="此处应该是头像" style="height: 20vh;border-radius: 50%;margin-top: 15px;" />
       <div class="drop_item">
         <router-link v-for="(item, index) in navSet" :key="index" :to="item.nav_path">{{item.nav_name}}</router-link>
         <a href="">分享</a>
@@ -10,7 +10,7 @@
       <div style="display: flex;flex-direction: column;">
         <div style="display: flex;justify-content: space-around;">
           <label style="color: #fff;">夜间模式</label>
-          <span :class="{ 'swich-btn': true, 'switch-btn-on': switchNight, 'switch-btn-out': !switchNight }" @click="toggle"></span>
+          <span :class="[ 'swich-btn', { 'switch-btn-on': switchNight, 'switch-btn-out': !switchNight } ]" @click="toggle"></span>
         </div>
         <div style="display: flex;justify-content: center;margin-top: 15px;">
           <button class="btn" @click="handleLogin" style="width: 80%;">登录</button>
@@ -54,7 +54,7 @@
 .mode {
   position: fixed;
   top: 0;left: 0;right: 0;bottom: 0;
-  z-index: 100;
+  z-index: 3000;
   background: rgba(241, 241, 240, .5);
   transition: background .5s ease-out;
 }
@@ -66,7 +66,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 12px;
+  padding: 26px 12px;
   border-radius: 20px;
   background-color: rgba(66, 66, 66, 1);
   text-align: center;
@@ -113,6 +113,7 @@
   width: 50px;
   height: 20px;
   padding: 4px 5px;
+  margin-left: 10px;
   border: 0;
   background-color: #666;
   border-radius: 25px;

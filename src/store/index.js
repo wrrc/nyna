@@ -49,6 +49,11 @@ export default new Vuex.Store({
     },
     setModeVisible(s) {
       s.modeVisible = !s.modeVisible;
+      if (document.body.className === '') {
+        document.body.className = 'no-scroll';
+      } else {
+        document.body.className = '';
+      }
     },
     setNight(s) {
       if (s.sonOrNight === '🌞') {
