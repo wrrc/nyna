@@ -4,14 +4,14 @@
     <div class="nav" v-show="barShrink">
       <router-link v-for="(item, index) in navSet" :key="index" :to="item.nav_path">{{item.nav_name}}</router-link>
     </div>
-    <div :class="[ 'attach', 'enter-input', { 'grow-bigger': bigger }]">
-      <input type="search" v-model="handleSearch" @focus="showSearchList" @blur="hideSearchList" class="inputc" style="width: 90%;height: 28px;" placeholder="当然你可以不搜..."  v-show="barShrink" />
+    <div ref="searchInput" :class="[ 'attach', 'enter-input' ]">
+      <input type="search" v-model="handleSearch" @focus="showSearchList" @blur="hideSearchList" @keydown="clearCount" class="inputc" style="width: 90%;height: 28px;" placeholder="当然你可以不搜..."  v-show="barShrink" />
       <span></span>
     </div>
     <div class="attach">
       <button v-show="!barShrink" class="btn" @click="dropDown" tooltip="查看更多" :placement="isPosition">👀</button>
       <button v-show="barShrink" @click="toWrite" class="btn" tooltip="我要我要写点神马" :placement="isPosition">🖨</button>
-      <button v-show="barShrink" @click="handleNight" class="btn" tooltip="夜间模式" :placement="isPosition">{{ sonOrNight }}</button>
+      <button v-show="barShrink" @click="handleNight" class="btn" tooltip="夜间模式" :placement="isPosition">{{ sunOrNight }}</button>
       <button v-show="barShrink" @click="handleLogin" class="btn" tooltip="登录" :placement="isPosition">🚀</button>
       <img :src="`http://127.0.0.1:7001/${userCard.user_avatar}`" v-show="barShrink && showUserAva" @mouseenter="showMode" class="nav-avatar"/>
 
@@ -22,25 +22,17 @@
 
       <!-- 搜索 -->
       <div class="to-search" v-show="list.length > 0">
-        <!-- <input type="text" v-model="val" name="" id="" /> -->
-        <!-- <div class="navs">
-          <ul class="relation" @click="heightLight">
-            <li data-path="/article">文章</li>
-            <li data-path="/content">内容</li>
-            <li data-path="/tag">标签</li>
-          </ul>
-          <div class="box1"></div>
-        </div> -->
-
         <div class="search-content">
-          <div v-show="list" v-for="(v, index) in list" :key="index">
+          <div v-show="list !== []" v-for="(v, index) in list" :key="index">
             <div style="padding: 6px 12px;">
-              <strong><a href="#"><cite v-html="v.title"></cite></a></strong>
+              <strong><a href="#"><cite v-html="v.title" style="text-decoration:underline;"></cite></a></strong>
               <p style="text-indent: 2em;font-size: x-small;word-break: break-all; width: inherit;" v-html="v.main"></p>
             </div>
           </div>
-          <button @click.prevent="loadMore" class="btn">加载更多</button>
-          <div v-show="!list"></div>
+          <div style="display: flex;justify-content: center;margin: 10px;">
+            <p v-show="ageGet" @mouseenter="loadMore">加载更多 (￣y▽,￣)╭ </p>
+            <p v-show="!ageGet">已无更多数据 ψ(._. )></p>
+          </div>
         </div>
       </div>
     </div>
@@ -59,9 +51,9 @@
         handleSearch: '',
         userBoard: false,
         timer: null,
-        bigger: false,
         list: [],
         count: 0,
+        ageGet: true
       }
     },
     methods: {
@@ -77,7 +69,6 @@
           val: false,
         });
         this.setModeVisible();
-        // document.body.style.filter = 'blur(5px)';
       },
       handleNight() {
         this.setNight();
@@ -108,52 +99,69 @@
         sessionStorage.removeItem('userCard');
       },
       showSearchList() {
-        this.bigger = !this.bigger;
         this.setModeVisible();
+        if (this.$refs.searchInput.classList.length >= 3) {
+          this.$refs.searchInput.classList.remove('grow-samll', 'grow-bigger');
+        }
+        this.$refs.searchInput.classList.add('grow-bigger');
       },
       hideSearchList() {
-        this.showSearchList();
+        this.setModeVisible();
+        if (this.$refs.searchInput.classList.length >= 3) {
+          this.$refs.searchInput.classList.remove('grow-samll', 'grow-bigger');
+        }
+        this.$refs.searchInput.classList.add('grow-samll');
         this.list = [];
         this.handleSearch = '';
       },
-      heightLight(e) {
-        if (e.target.nodeName === 'LI') {
-          const lis = (e.target.parentElement.children);
-          for (let i = 0; i < lis.length; i++) {
-            if (e.target.innerText === lis[i].innerText) {
-              const box = document.querySelector('.box1');
-              box.style.left = 12 + i * 60 + 'px';
-            }
-          }
-        }
-      },
+      // heightLight(e) {
+      //   if (e.target.nodeName === 'LI') {
+      //     const lis = (e.target.parentElement.children);
+      //     for (let i = 0; i < lis.length; i++) {
+      //       if (e.target.innerText === lis[i].innerText) {
+      //         const box = document.querySelector('.box1');
+      //         box.style.left = 12 + i * 60 + 'px';
+      //       }
+      //     }
+      //   }
+      // },
       translate(obj, reg) {
         obj.forEach(v => {
-          const rep = v.title.replace(reg, kw => {
+          v.title = v.title.replace(reg, kw => {
             return `<mark>${kw}</mark>`
           });
-          const rep1 = v.main.replace(reg, kw => {
+          v.main = v.main.replace(reg, kw => {
             return `<mark>${kw}</mark>`
           });
-          delete v.title;
-          delete v.main;
-          v.title = rep;
-          v.main = rep1;
         });
       },
-      loadMore() {
-        const reg = new RegExp(`${this.handleSearch}`, 'ig');
+      loadMore(e) {
+        const reg = new RegExp(`${this.handleSearch}`, 'i');
         axios
           .get('/searchAll', {
             params: {
-              val: newValue,
-              lim: this.count++,
+              val: this.handleSearch,
+              lim: this.count,
             }
           })
           .then(res => {
-            this.translate(res.dataSet, reg);
-            this.list.push(res.dataSet);
+            if (res.code === 100 || res.code === 2062) {
+              this.translate(res.dataSet, reg);
+              this.list.push(...res.dataSet);
+              this.count++;
+              if (res.code === 2062) {
+                this.count = 0;
+                this.ageGet = false;
+              }
+            } else {
+              this.count = 0;
+              this.ageGet = false;
+            }
           })
+      },
+      clearCount(e) {
+        this.count = 0;
+        this.list = [];
       }
     },
     // 3.0 获取多个状态，不必每个都生成计算属性
@@ -165,14 +173,14 @@
       // 传字符串参数 'bide' 等同于 `state => state.bide`
       bide: 'backIsShow',
       barShrink: 'barShrink',
-      sonOrNight: 'sonOrNight',
+      sunOrNight: 'sunOrNight',
       userCard: 'userCard',
       showUserAva: 'showUserAva',
     }),
     watch: {
       handleSearch(newValue, oldValue) {
         if (newValue !== '') {
-          const reg = new RegExp(`${newValue}`, 'ig');
+          const reg = new RegExp(`${newValue}`, 'i');
           axios
             .get('/searchAll', {
               params: {
@@ -181,8 +189,23 @@
               }
             })
             .then(res => {
-              this.translate(res.dataSet, reg);
-              this.list = res.dataSet;
+              if (res.code === 100 || res.code === 2062) {
+                this.translate(res.dataSet, reg);
+                if (res.code === 100) {
+                  this.list = res.dataSet;
+                  this.count++;
+                  this.ageGet = true;
+                }
+                if (res.code === 2062) {
+                  this.list.push(...res.dataSet);
+                  this.count = 0;
+                  this.ageGet = false;
+                }
+              } else {
+                this.list = [];
+                this.count = 0;
+                this.ageGet = false;
+              }
             })
         } else {
           this.list.splice(0);
@@ -215,18 +238,34 @@
 <style scoped>
 .grow-bigger {
   z-index: 3100;
-  animation: input-big .3s ease forwards;
+  animation: input-big .5s ease-out forwards;
+}
+
+.grow-samll {
+  z-index: 1600;
+  animation: input-small .5s ease-out forwards;
 }
 
 @keyframes input-big {
   to {
-    transform: translateY(200%) scale(1.5, 1.5);
+    transform: translate(-15%, 200%) scale(1.5, 1.5);
+  }
+}
+
+
+@keyframes input-small {
+  from {
+    transform: translate(-15%, 200%) scale(1.5, 1.5);
+  }
+  to {
+    transform: translate(0, 0) scale(1, 1);
   }
 }
 
 .attach {
   position: relative;
 }
+
 .nav-avatar {
   position: absolute;
   right: -0.8em;
@@ -243,13 +282,17 @@
 }
 
 .nav-avatar:active {
-  animation: to-scale .5s ease forwards;
+  animation: to-scale .5s ease-in-out forwards;
 }
 
-@keyframes to-scale {
+@keyframes in-scale {
   to {
     transform: scale(2, 2);
   }
+}
+
+.inputc {
+  color: var(--bcb)
 }
 
 .user-board {
@@ -275,17 +318,19 @@
 }
 
 .to-search {
-  max-width: 500px;
+  max-width: 600px;
   max-height: 550px;
-  overflow: hidden;
-  overflow-y: scroll;
   position: fixed;
   top: 160px;left: 0;right: 0;
   margin: 0 auto;
-  border-radius: var(--br);
-  background: var(--bcw);
+  padding: 10px 0;
   display: flex;
   justify-content: center;
+  overflow: hidden;
+  overflow-y: scroll;
+  border-radius: var(--br);
+  background: var(--bcw);
+  box-shadow: var(--boxSha);
   z-index: 3000;
   animation: output-in .5s ease-in-out forwards;
 }

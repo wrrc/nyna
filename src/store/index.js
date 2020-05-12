@@ -13,7 +13,7 @@ export default new Vuex.Store({
     barShrink: false,             // 顶栏响应式
     isDown: true,                 // 侧栏
     modeVisible: false,           // 模态遮罩
-    sonOrNight: '🌞',             // 夜间模式切换表情
+    sunOrNight: '🌞',             // 夜间模式切换表情
     switchNight: false,           // 侧栏开启夜间模式
     alertInfo: [],                // 弹窗信息
     token: '',                    // 用户 token
@@ -49,27 +49,37 @@ export default new Vuex.Store({
     },
     setModeVisible(s) {
       s.modeVisible = !s.modeVisible;
-      if (document.body.className === '') {
-        document.body.className = 'no-scroll';
+      let body = document.body.className,
+            readyBlur = document.getElementById('readyBlur').classList;
+      if (body === '') {
+        body = 'no-scroll';
       } else {
-        document.body.className = '';
+        body = '';
+      }
+      if (readyBlur.length === 0) {
+        readyBlur.add('blur-yes');
+      } else if (readyBlur.length === 1) {
+        readyBlur.add('blur-no');
+      } else if (readyBlur.length === 2) {
+        readyBlur.remove('blur-no');
       }
     },
     setNight(s) {
-      if (s.sonOrNight === '🌞') {
+      const styles = document.documentElement.style;
+      if (s.sunOrNight === '🌞') {
         s.switchNight = true;
-        s.sonOrNight = '🌙';
-        document.documentElement.style.setProperty('--bcl', '#171d20');
-        document.documentElement.style.setProperty('--bcw', '#2C3E50');
-        document.documentElement.style.setProperty('--bcb', 'ghostwhite');
-        document.documentElement.style.setProperty('--bcy', '#2C3E50');
+        s.sunOrNight = '🌙';
+        styles.setProperty('--bcl', '#171d20');
+        styles.setProperty('--bcw', '#2C3E50');
+        styles.setProperty('--bcb', 'ghostwhite');
+        styles.setProperty('--bcy', '#2C3E50');
       } else {
         s.switchNight = false;
-        s.sonOrNight = '🌞';
-        document.documentElement.style.setProperty('--bcl', 'ghostwhite');
-        document.documentElement.style.setProperty('--bcw', '#fff');
-        document.documentElement.style.setProperty('--bcb', '#2C3E50');
-        document.documentElement.style.setProperty('--bcy', '#f9f9f9');
+        s.sunOrNight = '🌞';
+        styles.setProperty('--bcl', 'ghostwhite');
+        styles.setProperty('--bcw', '#fff');
+        styles.setProperty('--bcb', '#2C3E50');
+        styles.setProperty('--bcy', '#f9f9f9');
       }
     },
     setAlertInfo(s, v) {

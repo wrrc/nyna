@@ -212,14 +212,14 @@ cite {
   background-clip: border-box;
   border-radius: 5px;
   will-change: animation;
-  /* transition: all 0.3s ease; */
+  /* transition: all .5s ease-out; */
 }
 
 .card:hover {
-  animation: enlarge .5s forwards;
-    -moz-animation: enlarge .5s forwards;
-    -o-animation: enlarge .5s forwards;
-    -webkit-animation: enlarge .5s forwards;
+  animation: enlarge .5s ease-out forwards;
+    -moz-animation: enlarge .5s ease-out forwards;
+    -o-animation: enlarge .5s ease-out forwards;
+    -webkit-animation: enlarge .5s ease-out forwards;
 }
 
 @keyframes enlarge {

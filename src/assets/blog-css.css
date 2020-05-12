@@ -115,6 +115,35 @@ mark {
   height: 100%;
 }
 
+.blur-yes {
+  animation: back-in .5s ease-in-out forwards;
+}
+
+.blur-no {
+  animation: back-out .5s ease-in-out forwards;
+}
+
+@keyframes back-in {
+  from {
+    transform: scale(1, 1);
+  }
+  to {
+    transform: scale(.5, .5) translateY(-50%);
+    filter: blur(5px);
+  }
+}
+
+@keyframes back-out {
+  from {
+    transform: scale(.5, .5) translateY(-50%);
+    filter: blur(5px);
+  }
+  to {
+    filter: blur(0);
+    transform: scale(1, 1);
+  }
+}
+
 /* button {
   display: inline-block;
   width: 70px;
@@ -398,12 +427,11 @@ button:active {
   outline: none;
   border: none;
   font-size: .9rem;
-  /* color: var(--bcb); */
   border-radius: var(--br);
   background: #e6ebe6;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
           box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
-  transition: all .5s ease;
+  transition: all .5s ease-in-out;
 }
 
 .inputc + span {
@@ -464,19 +492,19 @@ button:active {
   margin: 0 auto;
 }
 .slide-left-enter-active {
-  animation: in-left .5s ease forwards;
+  animation: in-left .5s ease-in-out forwards;
 }
 
 .slide-left-leave-active {
-  animation: out-left .5s forwards;
+  animation: out-left .5s ease-in-out forwards;
 }
 
 .slide-right-enter-active {
-  animation: in-right .5s ease forwards;
+  animation: in-right .5s ease-in-out forwards;
 }
 
 .slide-right-leave-active {
-  animation: out-right .5s forwards;
+  animation: out-right .5s ease-in-out forwards;
 }
 
 @keyframes in-left {
@@ -485,7 +513,7 @@ button:active {
     transform: translateX(100%);
     opacity: 0;
   }
-  40% {
+  /* 40% {
     transform: translateX(-5%);
   }
   55% {
@@ -496,7 +524,7 @@ button:active {
   }
   85% {
     transform: translateX(2%);
-  }
+  } */
   to {
     /* transform: rotateX(0); */
     transform: translateX(0);

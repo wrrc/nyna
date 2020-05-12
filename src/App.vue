@@ -3,12 +3,14 @@
     <DropDown />
     <Nav isPosition="bottom" />
     <Alert style="position: fixed;left: 0;right: 0;" />
-    <!-- <div class="container"> -->
-      <transition :name="transitionName">
-        <router-view />
-      </transition>
-    <!-- </div> -->
-    <BackTop />
+    <div id="readyBlur">
+      <!-- <div class="container"> -->
+        <transition :name="transitionName">
+          <router-view />
+        </transition>
+      <!-- </div> -->
+      <BackTop />
+    </div>
   </div>
 </template>
 

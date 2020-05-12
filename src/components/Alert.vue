@@ -35,6 +35,6 @@
   border-radius: var(--br);
   opacity: 1;
   color: #fff;
-  z-index: 3100;
+  z-index: 4000;
 }
 </style>

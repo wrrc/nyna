@@ -102,10 +102,6 @@ export default {
   cursor: pointer;
 }
 
-.search-content {
-
-}
-
 .box1 {
   position: absolute;
   top: 6px;
