@@ -1,21 +1,17 @@
 <template>
   <div>
-    <DropDown />
     <Nav isPosition="bottom" />
     <Alert style="position: fixed;left: 0;right: 0;" />
     <div id="readyBlur">
-      <!-- <div class="container"> -->
-        <transition :name="transitionName">
-          <router-view />
-        </transition>
-      <!-- </div> -->
+      <transition :name="transitionName">
+        <router-view />
+      </transition>
       <BackTop />
     </div>
   </div>
 </template>
 
 <script>
-import DropDown from '@/components/DropDown.vue';
 import BackTop from '@/components/BackTop.vue';
 import Nav from '@/components/Nav.vue';
 import Alert from './components/Alert.vue';
@@ -66,7 +62,6 @@ export default {
   components: {
     BackTop,
     Nav,
-    DropDown,
     Alert,
   },
 }

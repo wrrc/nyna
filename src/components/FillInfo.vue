@@ -93,7 +93,7 @@
         datas.append('pass', pass);
         datas.append('desc', desc);
         datas.append('file', this.$refs.getAvatar.files[0]);
-        if (email && nick && pass && passi) {
+        if (email && nick && sex && pass && passi) {
           axios.post('/regist', datas, {
             headers: {
               'Content-Type': 'multipart/form-data'

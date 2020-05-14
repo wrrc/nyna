@@ -34,7 +34,11 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('../views/Login.vue')
+    component: () => import('../views/Login.vue'),
+    beforeEnter: (to, from, next) => {
+      document.getElementById('readyBlur').classList.remove('blur-scale-no', 'blur-scale-yes');
+      next();
+    }
   },
   {
     path: '/',

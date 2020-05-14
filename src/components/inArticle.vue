@@ -216,19 +216,17 @@ cite {
 }
 
 .card:hover {
-  animation: enlarge .5s ease-out forwards;
-    -moz-animation: enlarge .5s ease-out forwards;
-    -o-animation: enlarge .5s ease-out forwards;
-    -webkit-animation: enlarge .5s ease-out forwards;
+  animation: enlarge .3s ease-out forwards;
+    -moz-animation: enlarge .3s ease-out forwards;
+    -o-animation: enlarge .3s ease-out forwards;
+    -webkit-animation: enlarge .3s ease-out forwards;
 }
 
 @keyframes enlarge {
-  from {
-    transform: translateY(0);
-  }
   to {
-    transform: translateY(-3%);
-    box-shadow: var(--boxSha);
+    transform-origin: top right;
+    transform: rotate(.5deg);
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, .2);
   }
 }
 

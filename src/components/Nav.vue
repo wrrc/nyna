@@ -35,16 +35,22 @@
           </div>
         </div>
       </div>
+
+      <DropDown v-show="" />
     </div>
   </nav>
 </template>
 
 <script>
+  import DropDown from '@/components/DropDown.vue';
   import { mapState } from 'vuex';
   import { mapMutations } from 'vuex';
 
   export default {
     name: 'wr-nav',
+    components: {
+      DropDown,
+    },
     props: ['isPosition'],
     data() {
       return {
@@ -61,14 +67,14 @@
         setUserCard: 'setUserCard',
         setToken: 'setToken',
         setNight: 'setNight',
-        setModeVisible: 'setModeVisible',
+        setMVScale: 'setMVScale',
         setIsDown: 'setIsDown',
       }),
       dropDown() {
         this.setIsDown({
           val: false,
         });
-        this.setModeVisible();
+        this.setMVScale();
       },
       handleNight() {
         this.setNight();
@@ -99,14 +105,14 @@
         sessionStorage.removeItem('userCard');
       },
       showSearchList() {
-        this.setModeVisible();
+        this.setMVScale();
         if (this.$refs.searchInput.classList.length >= 3) {
           this.$refs.searchInput.classList.remove('grow-samll', 'grow-bigger');
         }
         this.$refs.searchInput.classList.add('grow-bigger');
       },
       hideSearchList() {
-        this.setModeVisible();
+        this.setMVScale();
         if (this.$refs.searchInput.classList.length >= 3) {
           this.$refs.searchInput.classList.remove('grow-samll', 'grow-bigger');
         }

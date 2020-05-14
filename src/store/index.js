@@ -49,19 +49,22 @@ export default new Vuex.Store({
     },
     setModeVisible(s) {
       s.modeVisible = !s.modeVisible;
-      let body = document.body.className,
-            readyBlur = document.getElementById('readyBlur').classList;
+      let body = document.body.className;
       if (body === '') {
         body = 'no-scroll';
       } else {
         body = '';
       }
+    },
+    setMVScale(s) {
+      this.commit('setModeVisible');
+      let readyBlur = document.getElementById('readyBlur').classList;
       if (readyBlur.length === 0) {
-        readyBlur.add('blur-yes');
+        readyBlur.add('blur-scale-yes');
       } else if (readyBlur.length === 1) {
-        readyBlur.add('blur-no');
+        readyBlur.add('blur-scale-no');
       } else if (readyBlur.length === 2) {
-        readyBlur.remove('blur-no');
+        readyBlur.remove('blur-scale-no');
       }
     },
     setNight(s) {

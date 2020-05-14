@@ -67,6 +67,7 @@ _axios.interceptors.response.use(
         case 1011:
         case 1014:
         case 2013:
+        case 2012:
         case 2022:
         case 2023:
         case 2031:

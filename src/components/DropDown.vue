@@ -30,7 +30,7 @@
           type: 'setIsDown',
           val: true,
         });
-        this.$store.commit('setModeVisible');
+        this.$store.commit('setMVScale');
       },
       handleLogin() {
         this.$router.push('/login');

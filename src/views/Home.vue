@@ -65,7 +65,7 @@ export default {
   background: url('../assets/img/背景1.png') center center no-repeat;
   background-size: cover;
   border-radius: 20px;
-  animation: bc-drop .8s forwards;
+  animation: bc-drop .8s cubic-bezier(.2,1.68,.38,.73) forwards;
   /* transition: all .3s ease; */
 }
 
